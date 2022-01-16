@@ -1,29 +1,46 @@
 import jwt from 'jsonwebtoken';
 
+const issuer = 'Hoang Corp';
+const subject = 'hoang@hoang.com';
+const algorithm = 'RS256';
+
+export interface UserPayload {
+  id: string;
+  email: string;
+}
+
 export class JwtHelper {
   static createToken(payload: any) {
     const signOptions: jwt.SignOptions = {
-      issuer: 'Hoang Corp',
-      subject: 'hoang@hoang.com',
-      //audience: 'https://ticketing.vn',
+      issuer,
+      subject,
       expiresIn: '1h',
-      algorithm: 'RS256',
+      algorithm,
     };
     return jwt.sign(payload, process.env.JWT_PRIVATE_KEY!, signOptions);
   }
 
-  static verifyToken(token: string): any {
+  static verifyToken(token: string): UserPayload | undefined {
+    if (!token) return undefined;
+
     const verifyOptions: jwt.VerifyOptions = {
-      issuer: 'Hoang Corp',
-      subject: 'hoang@hoang.com',
-      //audience: 'https://ticketing.vn',
-      algorithms: ['RS256'],
+      issuer,
+      subject,
+      algorithms: [algorithm],
     };
     try {
-      return jwt.verify(token, process.env.JWT_PUBLIC_KEY!, verifyOptions);
+      const user = jwt.verify(
+        token,
+        process.env.JWT_PUBLIC_KEY!,
+        verifyOptions
+      );
+      if (!user?.exp) return undefined;
+      if (new Date(1000 * user.exp) < new Date()) return undefined;
+
+      return user as UserPayload;
     } catch {
       console.log('Invalid JWT signature');
-      return null;
+      return undefined;
     }
   }
 }

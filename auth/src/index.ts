@@ -9,7 +9,6 @@ import errorHandler from './middlewares/error-handler';
 import NotFoundError from './errors/not-found-error';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
-import validateRequest from './middlewares/validate-request';
 
 const app = express();
 app.set('trust proxy', true);
