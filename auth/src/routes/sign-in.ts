@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import { isTestEnvironment } from '../env';
 import BadRequestError from '../errors/bad-request-error';
 import validateRequest from '../middlewares/validate-request';
 import { UserModel } from '../models/user';
@@ -29,7 +30,7 @@ router.post(
 
     generateJwtToken(user, req);
 
-    console.log(`User '${email}' logged in successfully`);
+    !isTestEnvironment && console.log(`User '${email}' logged in successfully`);
     res.status(200).send(user);
   }
 );
