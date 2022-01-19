@@ -1,4 +1,4 @@
-import { JwtHelper } from '../services/jwt-helper';
+import { JwtHelper } from '@hoangrepo/common';
 import { Request } from 'express';
 
 export function generateJwtToken(userDoc: any, req: Request) {

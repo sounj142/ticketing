@@ -1,8 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { isTestEnvironment } from '../env';
-import BadRequestError from '../errors/bad-request-error';
-import validateRequest from '../middlewares/validate-request';
+import { BadRequestError, validateRequest } from '@hoangrepo/common';
 import { UserModel } from '../models/user';
 import { Password } from '../services/password';
 import { generateJwtToken } from './shared';

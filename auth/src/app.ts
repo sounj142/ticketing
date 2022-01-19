@@ -5,11 +5,9 @@ import currentUserRouter from './routes/current-user';
 import signInRouter from './routes/sign-in';
 import signOutRouter from './routes/sign-out';
 import signUpRouter from './routes/sign-up';
-import errorHandler from './middlewares/error-handler';
-import NotFoundError from './errors/not-found-error';
+import { errorHandler, NotFoundError } from '@hoangrepo/common';
 import cookieSession from 'cookie-session';
 import { isTestEnvironment } from './env';
-
 
 const app = express();
 app.set('trust proxy', true);

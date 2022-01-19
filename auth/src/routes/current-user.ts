@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import getCurrentUser from '../middlewares/get-current-user';
+import { getCurrentUser } from '@hoangrepo/common';
 
 const router = express.Router();
 
