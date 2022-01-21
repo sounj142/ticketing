@@ -19,9 +19,6 @@ async function applicationStart() {
 applicationStart();
 
 function checkApplicationVariables() {
-  if (!process.env.JWT_PRIVATE_KEY) {
-    throw new Error('Missing JWT_PRIVATE_KEY');
-  }
   if (!process.env.JWT_PUBLIC_KEY) {
     throw new Error('Missing JWT_PUBLIC_KEY');
   }

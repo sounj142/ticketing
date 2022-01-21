@@ -1,9 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
-import currentUserRouter from './routes/current-user';
-import signInRouter from './routes/sign-in';
-import signOutRouter from './routes/sign-out';
-import signUpRouter from './routes/sign-up';
+import getAllRouter from './routes/gets-all';
+import getByIdRouter from './routes/get-by-id';
 import {
   configCommonMiddlewareForExpress,
   configCatchAllAndHandleErrorMiddlewaresForExpress,
@@ -12,10 +10,8 @@ import {
 const app = express();
 configCommonMiddlewareForExpress(app);
 
-app.use(currentUserRouter);
-app.use(signInRouter);
-app.use(signOutRouter);
-app.use(signUpRouter);
+app.use(getAllRouter);
+app.use(getByIdRouter);
 
 configCatchAllAndHandleErrorMiddlewaresForExpress(app);
 

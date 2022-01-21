@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { isTestEnvironment } from '../env';
 import {
   BadRequestError,
   DatabaseConnectionError,
   validateRequest,
+  isTestEnvironment,
 } from '@hoangrepo/common';
 import { UserModel, User } from '../models/user';
 import { Password } from '../services/password';
