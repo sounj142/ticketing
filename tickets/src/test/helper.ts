@@ -1,15 +1,19 @@
+import { JwtHelper } from '@hoangrepo/common';
 import request from 'supertest';
 import app from '../app';
 
-export async function signUpAsTestUser() {
-  const authResponse = await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'password',
-    })
+export async function createNewTicket() {
+  const cookie = JwtHelper.generateCookieForTest();
+
+  const inputData = {
+    title: 'test title',
+    price: 100,
+  };
+  const res = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send(inputData)
     .expect(201);
 
-  const cookie = authResponse.get('Set-Cookie');
-  return cookie;
+  return { res, inputData };
 }

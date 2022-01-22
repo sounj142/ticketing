@@ -6,7 +6,7 @@ import {
   validateRequest,
   isTestEnvironment,
 } from '@hoangrepo/common';
-import { UserModel, User } from '../models/user';
+import { UserModel, UserAttrs } from '../models/user';
 import { Password } from '../services/password';
 import { generateJwtToken } from './shared';
 
@@ -32,7 +32,7 @@ router.post(
 
     const passwordHash = await Password.toHash(password);
     // save new user to mongodb
-    const userDoc = new UserModel<User>({
+    const userDoc = new UserModel<UserAttrs>({
       email,
       passwordHash,
     });

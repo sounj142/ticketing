@@ -1,10 +1,14 @@
 import { model, Schema } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
-export interface User {
+
+export interface UserAttrs {
   email: string;
   passwordHash: string;
-  createdDate?: Date;
+}
+
+export interface User extends UserAttrs {
+  createdDate: Date;
   updatedDate?: Date;
 }
 

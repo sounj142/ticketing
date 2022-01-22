@@ -24,6 +24,7 @@ afterAll(async () => {
 });
 
 function configEnvironmentVariables() {
+  // in test enviroment, we need a private key to generate test cookies
   process.env.JWT_PRIVATE_KEY = `-----BEGIN RSA PRIVATE KEY-----
 MIIBOgIBAAJAdRuXGw+zdWbUlm0QjNX6r+WDra78TSyOlknsTWNeUR/NxvnC+7Gc
 hLXx/tmfht5/Nf7oxaw4r0NG721Y5Y4zNwIDAQABAkA0Xs5Ib9EVY5MWYlfQY7Dk
