@@ -1,20 +1,26 @@
-import { connectToNats } from '@hoangrepo/common';
-import { Stan } from 'node-nats-streaming';
+import { natsWrapper } from '@hoangrepo/common';
 import prompt from 'prompt';
 import { TicketCreatedPublisher } from './events/ticket-created-publisher';
 
 console.clear();
 prompt.start();
 
-connectToNats('ticketing', 'http://localhost:4222', processAfterConnected);
+natsWrapper.connect('ticketing', 'http://localhost:4222').then(
+  processAfterConnected
+);
+
+natsWrapper.configGracefulShutdown(() => {
+  process.exit();
+});
+
 
 function onErr(err: any) {
   console.log(err);
   return 1;
 }
 
-function processAfterConnected(stan: Stan) {
-  const publisher = new TicketCreatedPublisher(stan);
+function processAfterConnected() {
+  const publisher = new TicketCreatedPublisher();
 
   promptAndPublish();
 

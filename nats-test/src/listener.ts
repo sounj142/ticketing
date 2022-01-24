@@ -1,7 +1,12 @@
-import { connectToNats } from '@hoangrepo/common';
+
+import { natsWrapper } from '@hoangrepo/common';
 import { TicketCreatedListener } from './events/ticket-created-listener';
 
 console.clear();
-connectToNats('ticketing', 'http://localhost:4222', (client) => {
-  new TicketCreatedListener(client).listen();
+natsWrapper.connect('ticketing', 'http://localhost:4222').then(() => {
+  new TicketCreatedListener().listen();
+});
+
+natsWrapper.configGracefulShutdown(() => {
+  process.exit();
 });

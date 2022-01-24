@@ -1,7 +1,6 @@
-import { connectToNats } from '@hoangrepo/common';
+import { natsWrapper } from '@hoangrepo/common';
 import mongoose from 'mongoose';
 import app from './app';
-import { NatsConfig } from './events/nat-config';
 
 async function applicationStart() {
   checkApplicationVariables();
@@ -9,16 +8,16 @@ async function applicationStart() {
     await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to mongodb');
 
+    await natsWrapper.connect('ticketing', process.env.NATS_URI!);
+    console.log('Connected to NAST');
+    natsWrapper.configGracefulShutdown(() => {
+      process.exit();
+    });
+
     const port = 3000;
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });
-
-    NatsConfig.natsClient = connectToNats(
-      'ticketing',
-      'http://nats-srv:4222',
-      (_client) => {}
-    );
   } catch (err) {
     console.error(err);
   }
@@ -32,5 +31,8 @@ function checkApplicationVariables() {
   }
   if (!process.env.MONGO_URI) {
     throw new Error('Missing MONGO_URI');
+  }
+  if (!process.env.NATS_URI) {
+    throw new Error('Missing NATS_URI');
   }
 }

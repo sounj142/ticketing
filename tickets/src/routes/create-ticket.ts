@@ -6,9 +6,10 @@ import {
   authentication,
 } from '@hoangrepo/common';
 import { TicketModel, TicketAttrs } from '../models/ticket';
-import { TicketCreatedPublisher } from '../events/ticket-created-publisher';
+import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
 
 const router = express.Router();
+const ticketCreatedPublisher = new TicketCreatedPublisher();
 
 export const ticketValidationRules = [
   body('title')
@@ -43,7 +44,6 @@ router.post(
       throw new DatabaseConnectionError();
     }
 
-    const ticketCreatedPublisher = new TicketCreatedPublisher();
     await ticketCreatedPublisher.publish({
       id: ticketDoc.id,
       title: ticketDoc.title,
