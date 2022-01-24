@@ -1,5 +1,7 @@
+import { connectToNats } from '@hoangrepo/common';
 import mongoose from 'mongoose';
 import app from './app';
+import { NatsConfig } from './events/nat-config';
 
 async function applicationStart() {
   checkApplicationVariables();
@@ -11,6 +13,12 @@ async function applicationStart() {
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });
+
+    NatsConfig.natsClient = connectToNats(
+      'ticketing',
+      'http://nats-srv:4222',
+      (_client) => {}
+    );
   } catch (err) {
     console.error(err);
   }

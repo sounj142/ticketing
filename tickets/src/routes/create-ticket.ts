@@ -6,6 +6,7 @@ import {
   authentication,
 } from '@hoangrepo/common';
 import { TicketModel, TicketAttrs } from '../models/ticket';
+import { TicketCreatedPublisher } from '../events/ticket-created-publisher';
 
 const router = express.Router();
 
@@ -41,6 +42,14 @@ router.post(
       console.error(err);
       throw new DatabaseConnectionError();
     }
+
+    const ticketCreatedPublisher = new TicketCreatedPublisher();
+    await ticketCreatedPublisher.publish({
+      id: ticketDoc.id,
+      title: ticketDoc.title,
+      price: ticketDoc.price,
+      userId: ticketDoc.userId,
+    });
 
     res.status(201).send(ticketDoc);
   }
