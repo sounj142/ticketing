@@ -18,6 +18,6 @@
     "prompt": "^1.2.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.5",
-    "@hoangrepo/common": "^1.0.21"
+    "@hoangrepo/common": "^1.0.23"
   }
 }

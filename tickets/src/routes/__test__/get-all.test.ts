@@ -2,9 +2,6 @@ import request from 'supertest';
 import app from '../../app';
 import { createNewTicket } from '../../test/helper';
 
-jest.mock('../../events/publishers/ticket-created-publisher');
-jest.mock('../../events/publishers/ticket-updated-publisher');
-
 it('returns empty array if there are no tickets in db', async () => {
   const res = await request(app).get('/api/tickets').send().expect(200);
 

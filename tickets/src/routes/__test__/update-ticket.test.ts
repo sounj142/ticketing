@@ -2,21 +2,8 @@ import { JwtHelper } from '@hoangrepo/common';
 import request from 'supertest';
 import app from '../../app';
 import { TicketModel } from '../../models/ticket';
+import { natsInfo } from '../../nats-info';
 import { createNewTicket } from '../../test/helper';
-
-// jest.mock('../../events/publishers/ticket-created-publisher');
-// jest.mock('../../events/publishers/ticket-updated-publisher');
-
-jest.mock('@hoangrepo/common', () => {
-  const originalModule = jest.requireActual('@hoangrepo/common');
-
-  //Mock the default export and named export 'foo'
-  return {
-    __esModule: true,
-    ...originalModule,
-    natsWrapper: null,
-  };
-});
 
 it('returns 401 if anonymous tries to update ticket', async () => {
   await request(app)
@@ -124,6 +111,9 @@ it('update a ticket with valid inputs', async () => {
 
   expect(res.body.title).toEqual(title);
   expect(res.body.price).toEqual(price);
+
+  // ensure it publishes an event
+  expect(natsInfo.client.publish).toHaveBeenCalledTimes(2);
 
   // ensure ticket was saved to db
   const tickets = await TicketModel.find({});

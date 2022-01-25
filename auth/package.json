@@ -26,7 +26,7 @@
     "typescript": "^4.5.4",
     "@types/express": "^4.17.13",
     "@types/supertest": "^2.0.11",
-    "@hoangrepo/common": "^1.0.16"
+    "@hoangrepo/common": "^1.0.23"
   },
   "devDependencies": {
     "jest": "^27.4.7",

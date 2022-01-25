@@ -1,4 +1,4 @@
-import { natsWrapper } from '@hoangrepo/common';
+import { natsInfo } from './nats-info';
 import mongoose from 'mongoose';
 import app from './app';
 
@@ -8,9 +8,13 @@ async function applicationStart() {
     await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to mongodb');
 
-    await natsWrapper.connect('ticketing', process.env.NATS_URI!);
+    await natsInfo.connect(
+      process.env.NATS_CLUSTER_ID!,
+      process.env.NATS_CLIENT_ID!,
+      process.env.NATS_URI!
+    );
     console.log('Connected to NAST');
-    natsWrapper.configGracefulShutdown(() => {
+    natsInfo.configGracefulShutdown(() => {
       process.exit();
     });
 
@@ -34,5 +38,11 @@ function checkApplicationVariables() {
   }
   if (!process.env.NATS_URI) {
     throw new Error('Missing NATS_URI');
+  }
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error('Missing NATS_CLUSTER_ID');
+  }
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error('Missing NATS_CLIENT_ID');
   }
 }

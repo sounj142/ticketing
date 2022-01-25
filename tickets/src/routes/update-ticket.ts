@@ -10,9 +10,9 @@ import {
 import { TicketModel } from '../models/ticket';
 import { ticketValidationRules } from './create-ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
+import { natsInfo } from '../nats-info';
 
 const router = express.Router();
-const ticketUpdatedPublisher = new TicketUpdatedPublisher();
 
 router.put(
   '/api/tickets/:id',
@@ -40,7 +40,7 @@ router.put(
       throw new DatabaseConnectionError();
     }
 
-    await ticketUpdatedPublisher.publish({
+    await new TicketUpdatedPublisher(natsInfo.client).publish({
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,

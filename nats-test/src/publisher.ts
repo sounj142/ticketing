@@ -1,18 +1,18 @@
 import { natsWrapper } from '@hoangrepo/common';
+import cuid from 'cuid';
 import prompt from 'prompt';
 import { TicketCreatedPublisher } from './events/ticket-created-publisher';
 
 console.clear();
 prompt.start();
 
-natsWrapper.connect('ticketing', 'http://localhost:4222').then(
-  processAfterConnected
-);
+natsWrapper
+  .connect('ticketing', cuid(), 'http://localhost:4222')
+  .then(processAfterConnected);
 
 natsWrapper.configGracefulShutdown(() => {
   process.exit();
 });
-
 
 function onErr(err: any) {
   console.log(err);
@@ -20,7 +20,7 @@ function onErr(err: any) {
 }
 
 function processAfterConnected() {
-  const publisher = new TicketCreatedPublisher();
+  const publisher = new TicketCreatedPublisher(natsWrapper.client);
 
   promptAndPublish();
 

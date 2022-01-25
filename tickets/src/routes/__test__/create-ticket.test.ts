@@ -2,9 +2,7 @@ import { JwtHelper } from '@hoangrepo/common';
 import request from 'supertest';
 import app from '../../app';
 import { TicketModel } from '../../models/ticket';
-
-jest.mock('../../events/publishers/ticket-created-publisher');
-jest.mock('../../events/publishers/ticket-updated-publisher');
+import { natsInfo } from '../../nats-info';
 
 it('post request to /api/tickets does not return 404', async () => {
   const res = await request(app).post('/api/tickets').send({});
@@ -76,6 +74,9 @@ it('create a ticket with valid inputs', async () => {
   expect(res.body.title).toEqual(title);
   expect(res.body.price).toEqual(price);
   expect(res.body.userId).toEqual(user.id);
+
+  // ensure it publishes an event
+  expect(natsInfo.client.publish).toHaveBeenCalledTimes(1);
 
   // ensure ticket was saved to db
   const tickets = await TicketModel.find({});

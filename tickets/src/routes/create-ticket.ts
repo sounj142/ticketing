@@ -7,9 +7,9 @@ import {
 } from '@hoangrepo/common';
 import { TicketModel, TicketAttrs } from '../models/ticket';
 import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
+import { natsInfo } from '../nats-info';
 
 const router = express.Router();
-const ticketCreatedPublisher = new TicketCreatedPublisher();
 
 export const ticketValidationRules = [
   body('title')
@@ -44,7 +44,7 @@ router.post(
       throw new DatabaseConnectionError();
     }
 
-    await ticketCreatedPublisher.publish({
+    await new TicketCreatedPublisher(natsInfo.client).publish({
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,

@@ -2,9 +2,6 @@ import request from 'supertest';
 import app from '../../app';
 import { createNewTicket } from '../../test/helper';
 
-jest.mock('../../events/publishers/ticket-created-publisher');
-jest.mock('../../events/publishers/ticket-updated-publisher');
-
 it('returns 404 error if the ticket id is not exist in db', async () => {
   await request(app).get('/api/tickets/434234').send().expect(404);
 
