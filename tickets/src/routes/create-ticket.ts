@@ -32,26 +32,26 @@ router.post(
   async (req: Request, res: Response) => {
     const { title, price }: { title: string; price: number } = req.body;
 
-    const ticketDoc = new TicketModel<TicketAttrs>({
+    const ticket = new TicketModel<TicketAttrs>({
       title,
       price,
       userId: req.currentUser!.id,
     });
     try {
-      await ticketDoc.save();
+      await ticket.save();
     } catch (err) {
       console.error(err);
       throw new DatabaseConnectionError();
     }
 
     await ticketCreatedPublisher.publish({
-      id: ticketDoc.id,
-      title: ticketDoc.title,
-      price: ticketDoc.price,
-      userId: ticketDoc.userId,
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
     });
 
-    res.status(201).send(ticketDoc);
+    res.status(201).send(ticket);
   }
 );
 

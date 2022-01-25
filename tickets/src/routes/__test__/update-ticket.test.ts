@@ -4,6 +4,20 @@ import app from '../../app';
 import { TicketModel } from '../../models/ticket';
 import { createNewTicket } from '../../test/helper';
 
+// jest.mock('../../events/publishers/ticket-created-publisher');
+// jest.mock('../../events/publishers/ticket-updated-publisher');
+
+jest.mock('@hoangrepo/common', () => {
+  const originalModule = jest.requireActual('@hoangrepo/common');
+
+  //Mock the default export and named export 'foo'
+  return {
+    __esModule: true,
+    ...originalModule,
+    natsWrapper: null,
+  };
+});
+
 it('returns 401 if anonymous tries to update ticket', async () => {
   await request(app)
     .put('/api/tickets/324234242343')

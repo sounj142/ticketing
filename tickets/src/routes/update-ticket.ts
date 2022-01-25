@@ -9,8 +9,10 @@ import {
 } from '@hoangrepo/common';
 import { TicketModel } from '../models/ticket';
 import { ticketValidationRules } from './create-ticket';
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 
 const router = express.Router();
+const ticketUpdatedPublisher = new TicketUpdatedPublisher();
 
 router.put(
   '/api/tickets/:id',
@@ -37,6 +39,13 @@ router.put(
       console.error(err);
       throw new DatabaseConnectionError();
     }
+
+    await ticketUpdatedPublisher.publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
     res.send(ticket);
   }
 );

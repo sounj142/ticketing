@@ -3,6 +3,9 @@ import request from 'supertest';
 import app from '../../app';
 import { TicketModel } from '../../models/ticket';
 
+jest.mock('../../events/publishers/ticket-created-publisher');
+jest.mock('../../events/publishers/ticket-updated-publisher');
+
 it('post request to /api/tickets does not return 404', async () => {
   const res = await request(app).post('/api/tickets').send({});
   expect(res.statusCode).not.toEqual(404);
