@@ -5,15 +5,14 @@ import app from '../app';
 export async function createNewTicket() {
   const cookie = JwtHelper.generateCookieForTest();
 
-  const inputData = {
-    title: 'test title',
-    price: 100,
-  };
   const res = await request(app)
     .post('/api/tickets')
     .set('Cookie', cookie)
-    .send(inputData)
+    .send({
+      title: 'test title',
+      price: 100,
+    })
     .expect(201);
 
-  return { res, inputData };
+  return { ticket: res.body };
 }

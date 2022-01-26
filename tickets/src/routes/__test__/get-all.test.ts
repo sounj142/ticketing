@@ -9,10 +9,10 @@ it('returns empty array if there are no tickets in db', async () => {
 });
 
 it('after create a ticket, receive it in the next get all request', async () => {
-  const { inputData } = await createNewTicket();
+  const { ticket } = await createNewTicket();
 
   const res = await request(app).get('/api/tickets').send().expect(200);
 
   expect(res.body.length).toEqual(1);
-  expect(res.body[0].title).toEqual(inputData.title);
+  expect(res.body[0].title).toEqual(ticket.title);
 });

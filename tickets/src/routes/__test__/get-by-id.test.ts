@@ -12,14 +12,13 @@ it('returns 404 error if the ticket id is not exist in db', async () => {
 });
 
 it('after create a ticket, receive it in the next get by id request', async () => {
-  const ticketCreateRes = await createNewTicket();
-  const createdTicket = ticketCreateRes.res.body;
+  const { ticket } = await createNewTicket();
 
   const res = await request(app)
-    .get(`/api/tickets/${createdTicket.id}`)
+    .get(`/api/tickets/${ticket.id}`)
     .send()
     .expect(200);
 
-  expect(res.body.title).toEqual(createdTicket.title);
-  expect(res.body.price).toEqual(createdTicket.price);
+  expect(res.body.title).toEqual(ticket.title);
+  expect(res.body.price).toEqual(ticket.price);
 });

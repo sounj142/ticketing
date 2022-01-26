@@ -73,9 +73,10 @@ it('returns a 400 on invalid price', async () => {
 
 it('return 403 if user try to edit ticket of other user', async () => {
   const createResponse = await createNewTicket();
+  const createdTicket = createResponse.ticket;
 
   await request(app)
-    .put(`/api/tickets/${createResponse.res.body.id}`)
+    .put(`/api/tickets/${createdTicket.id}`)
     .set(
       'Cookie',
       JwtHelper.generateCookieForTest({
@@ -89,19 +90,19 @@ it('return 403 if user try to edit ticket of other user', async () => {
     })
     .expect(403);
 
-  const ticket = await TicketModel.findById(createResponse.res.body.id);
-  expect(ticket!.title).toEqual(createResponse.inputData.title);
-  expect(ticket!.price).toEqual(createResponse.inputData.price);
+  const ticket = await TicketModel.findById(createdTicket.id);
+  expect(ticket!.title).toEqual(createdTicket.title);
+  expect(ticket!.price).toEqual(createdTicket.price);
 });
 
 it('update a ticket with valid inputs', async () => {
-  const createResponse = await createNewTicket();
+  const { ticket } = await createNewTicket();
   const cookie = JwtHelper.generateCookieForTest();
 
   const title = 'updated title';
   const price = 999;
   const res = await request(app)
-    .put(`/api/tickets/${createResponse.res.body.id}`)
+    .put(`/api/tickets/${ticket.id}`)
     .set('Cookie', cookie)
     .send({
       title,
@@ -120,5 +121,5 @@ it('update a ticket with valid inputs', async () => {
   expect(tickets.length).toEqual(1);
   expect(tickets[0].title).toEqual(title);
   expect(tickets[0].price).toEqual(price);
-  expect(tickets[0].userId).toEqual(createResponse.res.body.userId);
+  expect(tickets[0].userId).toEqual(ticket.userId);
 });

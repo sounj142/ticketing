@@ -4,54 +4,78 @@ import {
   DatabaseConnectionError,
   validateRequest,
   authentication,
+  NotFoundError,
+  BadRequestError,
 } from '@hoangrepo/common';
 import { natsInfo } from '../nats-info';
+import {
+  getExpiresAt,
+  OrderAttrs,
+  OrderModel,
+  OrderStatus,
+} from '../models/order';
+import { TicketModel } from '../models/ticket';
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 
 const router = express.Router();
-
-// export const ticketValidationRules = [
-//   body('title')
-//     .trim()
-//     .not()
-//     .isEmpty()
-//     .withMessage('Title is required')
-//     .isLength({ min: 5, max: 2000 })
-//     .withMessage('Title must has at least 5 characters'),
-//   body('price')
-//     .isFloat({ gt: 0 })
-//     .withMessage('Price must be a positive number'),
-// ];
 
 router.post(
   '/api/orders',
   authentication,
-  //ticketValidationRules,
+  [body('ticketId').not().isEmpty().withMessage('Ticket Id is required')],
   validateRequest,
   async (req: Request, res: Response) => {
-    // const { title, price }: { title: string; price: number } = req.body;
+    const { ticketId }: { ticketId: string } = req.body;
+    const currentUser = req.currentUser!;
 
-    // const ticket = new TicketModel<TicketAttrs>({
-    //   title,
-    //   price,
-    //   userId: req.currentUser!.id,
-    // });
-    // try {
-    //   await ticket.save();
-    // } catch (err) {
-    //   console.error(err);
-    //   throw new DatabaseConnectionError();
-    // }
+    const ticket = await TicketModel.findById(ticketId);
+    if (!ticket) {
+      throw new NotFoundError('Ticket does not exist');
+    }
 
-    // await new TicketCreatedPublisher(natsInfo.client).publish({
-    //   id: ticket.id,
-    //   title: ticket.title,
-    //   price: ticket.price,
-    //   userId: ticket.userId,
-    // });
+    const currentOrder = await OrderModel.findOne({
+      $or: [
+        {
+          status: OrderStatus.Pending,
+          ticketId: ticketId,
+        },
+        {
+          status: OrderStatus.Paid,
+          ticketId: ticketId,
+        },
+      ],
+    });
+    if (currentOrder) {
+      throw new BadRequestError(
+        currentOrder.status === OrderStatus.Pending
+          ? 'Ticket has been locked by other order!'
+          : 'Ticket has been ordered'
+      );
+    }
 
-    // res.status(201).send(ticket);
+    const order = new OrderModel<OrderAttrs>({
+      userId: currentUser.id,
+      status: OrderStatus.Pending,
+      expiresAt: getExpiresAt(),
+      ticketId: ticket.id,
+    });
+    try {
+      await order.save();
+    } catch (err) {
+      console.error(err);
+      throw new DatabaseConnectionError();
+    }
 
-    res.send({});
+    await new OrderCreatedPublisher(natsInfo.client).publish({
+      id: order.id,
+      userId: order.userId,
+      status: order.status,
+      expiresAt: order.expiresAt,
+      ticketId: order.ticketId,
+      version: order.__v,
+    });
+
+    res.status(201).send(order);
   }
 );
 

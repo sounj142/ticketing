@@ -33,19 +33,24 @@ router.put(
     const { title, price }: { title: string; price: number } = req.body;
     ticket.title = title;
     ticket.price = price;
-    try {
-      await ticket.save();
-    } catch (err) {
-      console.error(err);
-      throw new DatabaseConnectionError();
+
+    if (ticket.isModified()) {
+      try {
+        await ticket.save();
+      } catch (err) {
+        console.error(err);
+        throw new DatabaseConnectionError();
+      }
+
+      await new TicketUpdatedPublisher(natsInfo.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId,
+        version: ticket.__v,
+      });
     }
 
-    await new TicketUpdatedPublisher(natsInfo.client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
-    });
     res.send(ticket);
   }
 );
