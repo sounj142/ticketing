@@ -1,3 +1,4 @@
+import { getUtcNow } from '@hoangrepo/common';
 import { model, Schema } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
@@ -16,10 +17,10 @@ export interface Ticket extends TicketAttrs {
 const ticketSchema = new Schema<Ticket>(
   {
     title: { type: String, required: true },
-    price: { type: Number, required: true },
+    price: { type: Number, required: true, min: 0 },
     userId: { type: String, required: true },
-    createdDate: { type: Date, required: false },
-    updatedDate: { type: Date, required: false },
+    createdDate: { type: Schema.Types.Date, required: false },
+    updatedDate: { type: Schema.Types.Date, required: false },
   },
   {
     toJSON: {
@@ -37,9 +38,9 @@ const ticketSchema = new Schema<Ticket>(
 
 ticketSchema.pre('save', async function (next) {
   if (!this.createdDate) {
-    this.createdDate = new Date(new Date().toUTCString());
+    this.createdDate = getUtcNow();
   } else {
-    this.updatedDate = new Date(new Date().toUTCString());
+    this.updatedDate = getUtcNow();
     this.increment();
   }
   next();

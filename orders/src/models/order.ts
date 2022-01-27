@@ -1,18 +1,13 @@
+import { getUtcNow, OrderStatus } from '@hoangrepo/common';
 import { model, Schema } from 'mongoose';
-
-export enum OrderStatus {
-  Expired = 'expired',
-  Paid = 'paid',
-  Pending = 'pending',
-  Canceled = 'canceled',
-}
+import { Ticket } from './ticket';
 
 // 1. Create an interface representing a document in MongoDB.
 export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
-  expiresAt: Date;
-  ticketId: string;
+  expiresAt: Date | null;
+  ticket: Ticket;
 }
 
 export interface Order extends OrderAttrs {
@@ -24,11 +19,11 @@ export interface Order extends OrderAttrs {
 const orderSchema = new Schema<Order>(
   {
     userId: { type: String, required: true },
-    status: { type: String, required: true },
-    expiresAt: { type: Date, required: true },
-    ticketId: { type: String, required: true },
-    createdDate: { type: Date, required: false },
-    updatedDate: { type: Date, required: false },
+    status: { type: String, required: true, enum: Object.values(OrderStatus) },
+    expiresAt: { type: Schema.Types.Date, required: false },
+    ticket: { type: Schema.Types.ObjectId, ref: 'Ticket' },
+    createdDate: { type: Schema.Types.Date, required: false },
+    updatedDate: { type: Schema.Types.Date, required: false },
   },
   {
     toJSON: {
@@ -46,9 +41,9 @@ const orderSchema = new Schema<Order>(
 
 orderSchema.pre('save', async function (next) {
   if (!this.createdDate) {
-    this.createdDate = new Date(new Date().toUTCString());
+    this.createdDate = getUtcNow();
   } else {
-    this.updatedDate = new Date(new Date().toUTCString());
+    this.updatedDate = getUtcNow();
     this.increment();
   }
   next();
@@ -57,7 +52,7 @@ orderSchema.pre('save', async function (next) {
 export const OrderModel = model<Order>('Order', orderSchema);
 
 export function getExpiresAt(): Date {
-  const now = new Date();
+  const now = getUtcNow();
   now.setSeconds(now.getSeconds() + Number(process.env.ORDER_EXPIRE_SECONDS));
-  return new Date(now.toUTCString());
+  return now;
 }

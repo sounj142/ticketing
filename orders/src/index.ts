@@ -1,6 +1,24 @@
 import { natsInfo } from './nats-info';
 import mongoose from 'mongoose';
 import app from './app';
+import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
+import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
+
+async function configNATS() {
+  await natsInfo.connect(
+    process.env.NATS_CLUSTER_ID!,
+    process.env.NATS_CLIENT_ID!,
+    process.env.NATS_URI!
+  );
+  console.log('Connected to NAST');
+
+  new TicketCreatedListener(natsInfo.client).listen();
+  new TicketUpdatedListener(natsInfo.client).listen();
+
+  natsInfo.configGracefulShutdown(() => {
+    process.exit();
+  });
+}
 
 async function applicationStart() {
   checkApplicationVariables();
@@ -8,15 +26,7 @@ async function applicationStart() {
     await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to mongodb');
 
-    await natsInfo.connect(
-      process.env.NATS_CLUSTER_ID!,
-      process.env.NATS_CLIENT_ID!,
-      process.env.NATS_URI!
-    );
-    console.log('Connected to NAST');
-    natsInfo.configGracefulShutdown(() => {
-      process.exit();
-    });
+    await configNATS();
 
     const port = 3000;
     app.listen(port, () => {
@@ -47,5 +57,8 @@ function checkApplicationVariables() {
   }
   if (!process.env.ORDER_EXPIRE_SECONDS) {
     throw new Error('Missing ORDER_EXPIRE_SECONDS');
+  }
+  if (!process.env.ACK_WAIT_IN_MILISECONDS) {
+    throw new Error('Missing ACK_WAIT_IN_MILISECONDS');
   }
 }

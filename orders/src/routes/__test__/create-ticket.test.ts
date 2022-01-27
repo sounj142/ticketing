@@ -1,7 +1,7 @@
-import { JwtHelper } from '@hoangrepo/common';
+import { JwtHelper, OrderStatus } from '@hoangrepo/common';
 import request from 'supertest';
 import app from '../../app';
-import { OrderModel, OrderStatus } from '../../models/order';
+import { OrderModel } from '../../models/order';
 import { natsInfo } from '../../nats-info';
 import { createNewOrder, testUser } from '../../test/helper';
 
@@ -48,53 +48,21 @@ it('create an order with valid inputs', async () => {
   const { ticket, order } = await createNewOrder();
 
   expect(order.userId).toEqual(testUser.id);
-  expect(order.ticketId).toEqual(ticket.id);
+  expect(order.ticket.id).toEqual(ticket.id);
 
   // ensure it publishes an event
   expect(natsInfo.client.publish).toHaveBeenCalledTimes(1);
 
   // ensure order was saved to db
-  const orders = await OrderModel.find({});
+  const orders = await OrderModel.find({}).populate('ticket');
   expect(orders.length).toEqual(1);
   expect(orders[0].userId).toEqual(testUser.id);
-  expect(orders[0].ticketId).toEqual(ticket.id);
-  expect(orders[0].status).toEqual(OrderStatus.Pending);
+  expect(orders[0].ticket._id).toEqual(ticket.id);
+  expect(orders[0].status).toEqual(OrderStatus.Created);
 });
 
-it('return 400 if there has a pending order on that ticket', async () => {
+it('can create new order if there are another Created order on that ticket', async () => {
   const { ticket, cookie } = await createNewOrder();
-
-  await request(app)
-    .post('/api/orders')
-    .set('Cookie', cookie)
-    .send({
-      ticketId: ticket.id,
-    })
-    .expect(400);
-});
-
-it('return 400 if there has a paid order on that ticket', async () => {
-  const { ticket, cookie, order } = await createNewOrder();
-
-  const orderInDb = (await OrderModel.findById(order.id))!;
-  orderInDb.status = OrderStatus.Paid;
-  await orderInDb.save();
-
-  await request(app)
-    .post('/api/orders')
-    .set('Cookie', cookie)
-    .send({
-      ticketId: ticket.id,
-    })
-    .expect(400);
-});
-
-it('can create an order if there has an expired order on that ticket', async () => {
-  const { ticket, cookie, order } = await createNewOrder();
-
-  const orderInDb = (await OrderModel.findById(order.id))!;
-  orderInDb.status = OrderStatus.Expired;
-  await orderInDb.save();
 
   await request(app)
     .post('/api/orders')
@@ -105,11 +73,27 @@ it('can create an order if there has an expired order on that ticket', async () 
     .expect(201);
 });
 
-it('can create an order if there has a cancel order on that ticket', async () => {
+it('return 400 if there has a complete order on that ticket', async () => {
   const { ticket, cookie, order } = await createNewOrder();
 
   const orderInDb = (await OrderModel.findById(order.id))!;
-  orderInDb.status = OrderStatus.Canceled;
+  orderInDb.status = OrderStatus.Complete;
+  await orderInDb.save();
+
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', cookie)
+    .send({
+      ticketId: ticket.id,
+    })
+    .expect(400);
+});
+
+it('can create an order if there has only an cancelled order on that ticket', async () => {
+  const { ticket, cookie, order } = await createNewOrder();
+
+  const orderInDb = (await OrderModel.findById(order.id))!;
+  orderInDb.status = OrderStatus.Cancelled;
   await orderInDb.save();
 
   await request(app)

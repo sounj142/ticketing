@@ -44,4 +44,5 @@ lknsTWNeUR/NxvnC+7GchLXx/tmfht5/Nf7oxaw4r0NG721Y5Y4zNwIDAQAB
 -----END PUBLIC KEY-----`;
 
   process.env.ORDER_EXPIRE_SECONDS = '900';
+  process.env.ACK_WAIT_IN_MILISECONDS = '5000';
 }

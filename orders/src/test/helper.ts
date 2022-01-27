@@ -13,6 +13,7 @@ export const testTicket = {
   price: 100,
   userId: testUser.id,
   version: 1,
+  _id: '61f16e35e8ce351cc1232f03',
 };
 
 export async function createNewTicket() {

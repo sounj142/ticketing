@@ -6,13 +6,13 @@ import {
   authentication,
   NotFoundError,
   BadRequestError,
+  OrderStatus,
 } from '@hoangrepo/common';
 import { natsInfo } from '../nats-info';
 import {
   getExpiresAt,
   OrderAttrs,
-  OrderModel,
-  OrderStatus,
+  OrderModel
 } from '../models/order';
 import { TicketModel } from '../models/ticket';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
@@ -22,7 +22,7 @@ const router = express.Router();
 router.post(
   '/api/orders',
   authentication,
-  [body('ticketId').not().isEmpty().withMessage('Ticket Id is required')],
+  [body('ticketId').not().isEmpty().withMessage('TicketId is required')],
   validateRequest,
   async (req: Request, res: Response) => {
     const { ticketId }: { ticketId: string } = req.body;
@@ -36,28 +36,28 @@ router.post(
     const currentOrder = await OrderModel.findOne({
       $or: [
         {
-          status: OrderStatus.Pending,
+          status: OrderStatus.AwaitingPayment,
           ticketId: ticketId,
         },
         {
-          status: OrderStatus.Paid,
+          status: OrderStatus.Complete,
           ticketId: ticketId,
         },
       ],
     });
     if (currentOrder) {
       throw new BadRequestError(
-        currentOrder.status === OrderStatus.Pending
+        currentOrder.status === OrderStatus.AwaitingPayment
           ? 'Ticket has been locked by other order!'
-          : 'Ticket has been ordered'
+          : 'Ticket has been sold'
       );
     }
 
     const order = new OrderModel<OrderAttrs>({
       userId: currentUser.id,
-      status: OrderStatus.Pending,
+      status: OrderStatus.Created,
       expiresAt: getExpiresAt(),
-      ticketId: ticket.id,
+      ticket: ticket,
     });
     try {
       await order.save();
@@ -71,7 +71,7 @@ router.post(
       userId: order.userId,
       status: order.status,
       expiresAt: order.expiresAt,
-      ticketId: order.ticketId,
+      ticketId: order.ticket._id,
       version: order.__v,
     });
 

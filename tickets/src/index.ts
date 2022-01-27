@@ -2,21 +2,26 @@ import { natsInfo } from './nats-info';
 import mongoose from 'mongoose';
 import app from './app';
 
+async function configNATS() {
+  await natsInfo.connect(
+    process.env.NATS_CLUSTER_ID!,
+    process.env.NATS_CLIENT_ID!,
+    process.env.NATS_URI!
+  );
+  console.log('Connected to NAST');
+
+  natsInfo.configGracefulShutdown(() => {
+    process.exit();
+  });
+}
+
 async function applicationStart() {
   checkApplicationVariables();
   try {
     await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to mongodb');
 
-    await natsInfo.connect(
-      process.env.NATS_CLUSTER_ID!,
-      process.env.NATS_CLIENT_ID!,
-      process.env.NATS_URI!
-    );
-    console.log('Connected to NAST');
-    natsInfo.configGracefulShutdown(() => {
-      process.exit();
-    });
+    await configNATS();
 
     const port = 3000;
     app.listen(port, () => {
@@ -44,5 +49,8 @@ function checkApplicationVariables() {
   }
   if (!process.env.NATS_CLIENT_ID) {
     throw new Error('Missing NATS_CLIENT_ID');
+  }
+  if (!process.env.ACK_WAIT_IN_MILISECONDS) {
+    throw new Error('Missing ACK_WAIT_IN_MILISECONDS');
   }
 }
