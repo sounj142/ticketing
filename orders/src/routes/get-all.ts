@@ -8,7 +8,9 @@ router.get(
   '/api/orders',
   authentication,
   async (req: Request, res: Response) => {
-    const orders = await OrderModel.find({ userId: req.currentUser!.id });
+    const orders = await OrderModel.find({
+      userId: req.currentUser!.id,
+    }).populate('ticket');
     res.send(orders);
   }
 );

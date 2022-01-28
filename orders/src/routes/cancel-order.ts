@@ -20,7 +20,7 @@ router.delete(
   async (req: Request, res: Response) => {
     const id = MongoHelper.parseObjectIdAndThrowNotFound(req.params.id);
 
-    const order = await OrderModel.findById(id).populate('ticket');;
+    const order = await OrderModel.findById(id).populate('ticket');
     if (!order) {
       throw new NotFoundError('Order does not exist');
     }

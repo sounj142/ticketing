@@ -9,12 +9,8 @@ import {
   OrderStatus,
 } from '@hoangrepo/common';
 import { natsInfo } from '../nats-info';
-import {
-  getExpiresAt,
-  OrderAttrs,
-  OrderModel
-} from '../models/order';
-import { TicketModel } from '../models/ticket';
+import { getExpiresAt, OrderAttrs, OrderModel } from '../models/order';
+import { isReservedTicket, TicketModel } from '../models/ticket';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 
 const router = express.Router();
@@ -25,39 +21,27 @@ router.post(
   [body('ticketId').not().isEmpty().withMessage('TicketId is required')],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { ticketId }: { ticketId: string } = req.body;
+    const ticketId: string = req.body.ticketId;
     const currentUser = req.currentUser!;
 
+    // find the ticket the user is trying to order in the database
     const ticket = await TicketModel.findById(ticketId);
     if (!ticket) {
       throw new NotFoundError('Ticket does not exist');
     }
 
-    const currentOrder = await OrderModel.findOne({
-      $or: [
-        {
-          status: OrderStatus.AwaitingPayment,
-          ticketId: ticketId,
-        },
-        {
-          status: OrderStatus.Complete,
-          ticketId: ticketId,
-        },
-      ],
-    });
-    if (currentOrder) {
-      throw new BadRequestError(
-        currentOrder.status === OrderStatus.AwaitingPayment
-          ? 'Ticket has been locked by other order!'
-          : 'Ticket has been sold'
-      );
+    // make sure that this ticket is not already reserved
+    if (await isReservedTicket(ticketId)) {
+      throw new BadRequestError('Ticket has been already reserved');
     }
 
+    // build the order and save it to the database
     const order = new OrderModel<OrderAttrs>({
       userId: currentUser.id,
       status: OrderStatus.Created,
-      expiresAt: getExpiresAt(),
+      expiresAt: getExpiresAt(), // calculate an expiration date for this order
       ticket: ticket,
+      ticketId: ticket._id,
     });
     try {
       await order.save();
@@ -66,12 +50,13 @@ router.post(
       throw new DatabaseConnectionError();
     }
 
+    // publish an event saying that an order was created
     await new OrderCreatedPublisher(natsInfo.client).publish({
       id: order.id,
       userId: order.userId,
       status: order.status,
       expiresAt: order.expiresAt,
-      ticketId: order.ticket._id,
+      ticketId: order.ticketId,
       version: order.__v,
     });
 

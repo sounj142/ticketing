@@ -55,8 +55,8 @@ function checkApplicationVariables() {
   if (!process.env.NATS_CLIENT_ID) {
     throw new Error('Missing NATS_CLIENT_ID');
   }
-  if (!process.env.ORDER_EXPIRE_SECONDS) {
-    throw new Error('Missing ORDER_EXPIRE_SECONDS');
+  if (!process.env.EXPIRATION_WINDOW_SECONDS) {
+    throw new Error('Missing EXPIRATION_WINDOW_SECONDS');
   }
   if (!process.env.ACK_WAIT_IN_MILISECONDS) {
     throw new Error('Missing ACK_WAIT_IN_MILISECONDS');

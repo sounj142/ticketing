@@ -7,6 +7,7 @@ export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
   expiresAt: Date | null;
+  ticketId: string;
   ticket: Ticket;
 }
 
@@ -21,7 +22,8 @@ const orderSchema = new Schema<Order>(
     userId: { type: String, required: true },
     status: { type: String, required: true, enum: Object.values(OrderStatus) },
     expiresAt: { type: Schema.Types.Date, required: false },
-    ticket: { type: Schema.Types.ObjectId, ref: 'Ticket' },
+    ticket: { type: Schema.Types.ObjectId, ref: 'Ticket', required: true },
+    ticketId: { type: String, required: true },
     createdDate: { type: Schema.Types.Date, required: false },
     updatedDate: { type: Schema.Types.Date, required: false },
   },
@@ -39,7 +41,7 @@ const orderSchema = new Schema<Order>(
   }
 );
 
-orderSchema.pre('save', async function (next) {
+orderSchema.pre('save', function (next) {
   if (!this.createdDate) {
     this.createdDate = getUtcNow();
   } else {
@@ -53,6 +55,6 @@ export const OrderModel = model<Order>('Order', orderSchema);
 
 export function getExpiresAt(): Date {
   const now = getUtcNow();
-  now.setSeconds(now.getSeconds() + Number(process.env.ORDER_EXPIRE_SECONDS));
+  now.setSeconds(now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS));
   return now;
 }

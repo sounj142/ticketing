@@ -57,11 +57,12 @@ it('create an order with valid inputs', async () => {
   const orders = await OrderModel.find({}).populate('ticket');
   expect(orders.length).toEqual(1);
   expect(orders[0].userId).toEqual(testUser.id);
-  expect(orders[0].ticket._id).toEqual(ticket.id);
   expect(orders[0].status).toEqual(OrderStatus.Created);
+  expect(orders[0].ticketId).toEqual(ticket.id);
+  expect(orders[0].ticket._id).toEqual(ticket.id);
 });
 
-it('can create new order if there are another Created order on that ticket', async () => {
+it('return 400 if there has a created order on that ticket', async () => {
   const { ticket, cookie } = await createNewOrder();
 
   await request(app)
@@ -70,7 +71,7 @@ it('can create new order if there are another Created order on that ticket', asy
     .send({
       ticketId: ticket.id,
     })
-    .expect(201);
+    .expect(400);
 });
 
 it('return 400 if there has a complete order on that ticket', async () => {
@@ -78,6 +79,22 @@ it('return 400 if there has a complete order on that ticket', async () => {
 
   const orderInDb = (await OrderModel.findById(order.id))!;
   orderInDb.status = OrderStatus.Complete;
+  await orderInDb.save();
+
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', cookie)
+    .send({
+      ticketId: ticket.id,
+    })
+    .expect(400);
+});
+
+it('return 400 if there has a awaiting payment order on that ticket', async () => {
+  const { ticket, cookie, order } = await createNewOrder();
+
+  const orderInDb = (await OrderModel.findById(order.id))!;
+  orderInDb.status = OrderStatus.AwaitingPayment;
   await orderInDb.save();
 
   await request(app)
