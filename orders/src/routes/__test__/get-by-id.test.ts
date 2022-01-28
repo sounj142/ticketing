@@ -40,7 +40,7 @@ it('after create an order, can receive it in the next get by id request', async 
   expect(res.body.id).toEqual(order.id);
 });
 
-it('return 404 if user try to get the order belong to others', async () => {
+it('return 403 if user try to get the order belong to others', async () => {
   const { order } = await createNewOrder();
 
   const otherUserCookie = JwtHelper.generateCookieForTest({
@@ -52,5 +52,5 @@ it('return 404 if user try to get the order belong to others', async () => {
     .get(`/api/orders/${order.id}`)
     .set('Cookie', otherUserCookie)
     .send()
-    .expect(404);
+    .expect(403);
 });

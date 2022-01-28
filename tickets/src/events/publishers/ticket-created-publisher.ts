@@ -1,4 +1,3 @@
-import { Stan } from 'node-nats-streaming';
 import {
   Publisher,
   Subjects,
@@ -6,7 +5,5 @@ import {
 } from '@hoangrepo/common';
 
 export class TicketCreatedPublisher extends Publisher<TicketCreatedEventDefinition> {
-  constructor(client: Stan) {
-    super(client, Subjects.TicketCreated);
-  }
+  subject: Subjects.TicketCreated = Subjects.TicketCreated;
 }

@@ -9,7 +9,7 @@ import {
   OrderStatus,
 } from '@hoangrepo/common';
 import { OrderModel } from '../models/order';
-import { OrderUpdatedPublisher } from '../events/publishers/order-updated-publisher';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { natsInfo } from '../nats-info';
 
 const router = express.Router();
@@ -27,11 +27,8 @@ router.delete(
     if (order.userId !== req.currentUser!.id) {
       throw new ForbiddenError();
     }
-    if (
-      order.status === OrderStatus.Cancelled ||
-      order.status === OrderStatus.Complete
-    ) {
-      throw new BadRequestError("Can't cancel this order");
+    if (order.status === OrderStatus.Cancelled) {
+      throw new BadRequestError('This order has already been cacelled');
     }
 
     order.status = OrderStatus.Cancelled;
@@ -42,12 +39,16 @@ router.delete(
       throw new DatabaseConnectionError();
     }
 
-    await new OrderUpdatedPublisher(natsInfo.client).publish({
+    await new OrderCancelledPublisher(natsInfo.client).publish({
       id: order.id,
       userId: order.userId,
       status: order.status,
       expiresAt: order.expiresAt,
-      ticketId: order.ticket._id,
+      ticket: {
+        id: order.ticket._id,
+        price: order.ticket.price,
+        title: order.ticket.title,
+      },
       version: order.__v,
     });
 

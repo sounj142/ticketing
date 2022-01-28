@@ -6,7 +6,7 @@ import { Ticket } from './ticket';
 export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
-  expiresAt: Date | null;
+  expiresAt: Date; // cân nhắc chuyển expiresAt sang Expiration service! Cân nhắc chuyển thành createAt?
   ticketId: string;
   ticket: Ticket;
 }
@@ -55,6 +55,8 @@ export const OrderModel = model<Order>('Order', orderSchema);
 
 export function getExpiresAt(): Date {
   const now = getUtcNow();
-  now.setSeconds(now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS));
+  now.setSeconds(
+    now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS)
+  );
   return now;
 }

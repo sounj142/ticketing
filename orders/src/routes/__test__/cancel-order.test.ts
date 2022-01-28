@@ -72,12 +72,14 @@ it('cancel an order with valid inputs', async () => {
   expect(orders[0].status).toEqual(OrderStatus.Cancelled);
 });
 
-it('return 400 if user try to cancel a complete order', async () => {
+it('return 400 if user try to cancel a cancelled order', async () => {
   const { order, cookie } = await createNewOrder();
 
-  const orderInDb = (await OrderModel.findById(order.id))!;
-  orderInDb.status = OrderStatus.Complete;
-  await orderInDb.save();
+  await request(app)
+    .delete(`/api/orders/${order.id}`)
+    .set('Cookie', cookie)
+    .send()
+    .expect(200);
 
   await request(app)
     .delete(`/api/orders/${order.id}`)

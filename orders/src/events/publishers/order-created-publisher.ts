@@ -1,4 +1,3 @@
-import { Stan } from 'node-nats-streaming';
 import {
   Publisher,
   Subjects,
@@ -6,7 +5,5 @@ import {
 } from '@hoangrepo/common';
 
 export class OrderCreatedPublisher extends Publisher<OrderCreatedEventDefinition> {
-  constructor(client: Stan) {
-    super(client, Subjects.OrderCreated);
-  }
+  subject: Subjects.OrderCreated = Subjects.OrderCreated;
 }
