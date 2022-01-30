@@ -5,19 +5,21 @@
   "main": "index.js",
   "scripts": {
     "publish": "ts-node-dev --notify false src/publisher.ts",
-    "listen": "ts-node-dev --notify false src/listener.ts"
+    "listen": "ts-node-dev --notify false src/listener.ts",
+    "test-events": "ts-node-dev --notify false src/test-events.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hoangrepo/common": "^1.0.36",
     "@types/node": "^17.0.10",
     "@types/prompt": "^1.1.2",
+    "axios": "^0.25.0",
     "cuid": "^2.1.8",
     "node-nats-streaming": "^0.2.6",
     "prompt": "^1.2.1",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.5",
-    "@hoangrepo/common": "^1.0.34"
+    "typescript": "^4.5.5"
   }
 }

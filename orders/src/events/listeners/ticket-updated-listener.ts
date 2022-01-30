@@ -16,9 +16,8 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEventDefinition
 
     const ticket = await TicketModel.findById(event.id);
     if (!ticket) return false;
-    
-    // here
-    // if (ticket.version + 1 !== event.version) return false;
+
+    if (ticket.version + 1 !== event.version) return false;
 
     ticket.title = event.title;
     ticket.price = event.price;
