@@ -12,7 +12,7 @@ export class TicketCreatedListener extends Listener<TicketCreatedEventDefinition
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: TicketCreatedEvent): Promise<boolean> {
-    console.log('Receive Message Data: ', event);
+    console.log('Ticket created message: ', event);
 
     const ticketModel = new TicketModel<Ticket>({
       _id: event.id,

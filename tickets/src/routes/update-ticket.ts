@@ -48,7 +48,6 @@ router.put(
         price: ticket.price,
         userId: ticket.userId,
         version: ticket.__v,
-        //version: ticket.__v == 1 ? 2 : ticket.__v == 2 ? 1 : ticket.__v,
       });
     }
 

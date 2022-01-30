@@ -12,7 +12,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEventDefinition
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: TicketUpdatedEvent): Promise<boolean> {
-    console.log('Message: ', event);
+    console.log('Ticket updated message: ', event);
 
     const ticket = await TicketModel.findById(event.id);
     if (!ticket) return false;
