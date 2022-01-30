@@ -6,7 +6,6 @@ import { Ticket } from './ticket';
 export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
-  expiresAt: Date; // cân nhắc chuyển expiresAt sang Expiration service! Cân nhắc chuyển thành createAt?
   ticketId: string;
   ticket: Ticket;
 }
@@ -21,7 +20,6 @@ const orderSchema = new Schema<Order>(
   {
     userId: { type: String, required: true },
     status: { type: String, required: true, enum: Object.values(OrderStatus) },
-    expiresAt: { type: Schema.Types.Date, required: false },
     ticket: { type: Schema.Types.ObjectId, ref: 'Ticket', required: true },
     ticketId: { type: String, required: true },
     createdDate: { type: Schema.Types.Date, required: false },
@@ -53,10 +51,10 @@ orderSchema.pre('save', function (next) {
 
 export const OrderModel = model<Order>('Order', orderSchema);
 
-export function getExpiresAt(): Date {
-  const now = getUtcNow();
-  now.setSeconds(
-    now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS)
-  );
-  return now;
-}
+// export function getExpiresAt(): Date {
+//   const now = getUtcNow();
+//   now.setSeconds(
+//     now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS)
+//   );
+//   return now;
+// }

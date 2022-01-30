@@ -38,6 +38,7 @@ function processAfterConnected() {
           title: result.title as string,
           price: Math.random() * 1000,
           userId: 'asasds',
+          version: 1,
         })
         .then(() => {
           console.log('event published!');

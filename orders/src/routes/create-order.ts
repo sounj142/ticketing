@@ -9,7 +9,7 @@ import {
   OrderStatus,
 } from '@hoangrepo/common';
 import { natsInfo } from '../nats-info';
-import { getExpiresAt, OrderAttrs, OrderModel } from '../models/order';
+import { OrderAttrs, OrderModel } from '../models/order';
 import { isReservedTicket, TicketModel } from '../models/ticket';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 
@@ -39,7 +39,6 @@ router.post(
     const order = new OrderModel<OrderAttrs>({
       userId: currentUser.id,
       status: OrderStatus.Created,
-      expiresAt: getExpiresAt(), // calculate an expiration date for this order
       ticket: ticket,
       ticketId: ticket._id,
     });
@@ -55,7 +54,7 @@ router.post(
       id: order.id,
       userId: order.userId,
       status: order.status,
-      expiresAt: order.expiresAt,
+      createdAt: order.createdDate,
       ticket: {
         id: order.ticket._id,
         price: order.ticket.price,

@@ -6,7 +6,8 @@ import {
 } from '@hoangrepo/common';
 
 export class TicketCreatedPublisher extends Publisher<TicketCreatedEventDefinition> {
+  subject: Subjects.TicketCreated = Subjects.TicketCreated;
   constructor(client: Stan) {
-    super(client, Subjects.TicketCreated);
+    super(client);
   }
 }
