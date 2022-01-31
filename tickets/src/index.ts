@@ -1,6 +1,8 @@
 import { natsInfo } from './nats-info';
 import mongoose from 'mongoose';
 import app from './app';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 
 async function configNATS() {
   await natsInfo.connect(
@@ -9,6 +11,8 @@ async function configNATS() {
     process.env.NATS_URI!
   );
   console.log('Connected to NAST');
+  new OrderCreatedListener(natsInfo.client).listen();
+  new OrderCancelledListener(natsInfo.client).listen();
 
   natsInfo.configGracefulShutdown(() => {
     process.exit();

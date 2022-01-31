@@ -6,6 +6,7 @@ import {
   MongoHelper,
   NotFoundError,
   ForbiddenError,
+  BadRequestError,
 } from '@hoangrepo/common';
 import { TicketModel } from '../models/ticket';
 import { ticketValidationRules } from './create-ticket';
@@ -29,6 +30,9 @@ router.put(
     if (ticket.userId !== req.currentUser!.id) {
       throw new ForbiddenError();
     }
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
 
     const { title, price }: { title: string; price: number } = req.body;
     ticket.title = title;
@@ -49,6 +53,7 @@ router.put(
         userId: ticket.userId,
         version: ticket.__v,
         //version: ticket.__v == 1 ? 2 : ticket.__v == 2 ? 1 : ticket.__v,
+        orderId: ticket.orderId,
       });
     }
 

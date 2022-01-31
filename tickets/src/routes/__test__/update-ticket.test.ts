@@ -72,8 +72,7 @@ it('returns a 400 on invalid price', async () => {
 });
 
 it('return 403 if user try to edit ticket of other user', async () => {
-  const createResponse = await createNewTicket();
-  const createdTicket = createResponse.ticket;
+  const { ticket: createdTicket } = await createNewTicket();
 
   await request(app)
     .put(`/api/tickets/${createdTicket.id}`)
@@ -96,8 +95,7 @@ it('return 403 if user try to edit ticket of other user', async () => {
 });
 
 it('update a ticket with valid inputs', async () => {
-  const { ticket } = await createNewTicket();
-  const cookie = JwtHelper.generateCookieForTest();
+  const { ticket, cookie } = await createNewTicket();
 
   const title = 'updated title';
   const price = 999;
@@ -122,4 +120,23 @@ it('update a ticket with valid inputs', async () => {
   expect(tickets[0].title).toEqual(title);
   expect(tickets[0].price).toEqual(price);
   expect(tickets[0].userId).toEqual(ticket.userId);
+});
+
+it('return 400 if user try to update a reserved ticket', async () => {
+  const { ticket, cookie } = await createNewTicket();
+
+  // set orderId to ticket
+  const ticketData = await TicketModel.findById(ticket.id);
+
+  ticketData!.orderId = '61f367fd3bbf580d5a10da24';
+  await ticketData!.save();
+
+  await request(app)
+    .put(`/api/tickets/${ticket.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title: 'updated title',
+      price: 999,
+    })
+    .expect(400);
 });

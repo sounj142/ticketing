@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hoangrepo/common": "^1.0.36",
+    "@hoangrepo/common": "^1.0.37",
     "@types/node": "^17.0.10",
     "@types/prompt": "^1.1.2",
     "axios": "^0.25.0",

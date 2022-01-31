@@ -14,5 +14,5 @@ export async function createNewTicket() {
     })
     .expect(201);
 
-  return { ticket: res.body };
+  return { ticket: res.body, cookie };
 }

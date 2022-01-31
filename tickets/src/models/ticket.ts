@@ -6,6 +6,7 @@ export interface TicketAttrs {
   title: string;
   price: number;
   userId: string;
+  orderId?: string;
 }
 
 export interface Ticket extends TicketAttrs {
@@ -19,6 +20,7 @@ const ticketSchema = new Schema<Ticket>(
     title: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     userId: { type: String, required: true },
+    orderId: { type: String, required: false },
     createdDate: { type: Schema.Types.Date, required: false },
     updatedDate: { type: Schema.Types.Date, required: false },
   },
