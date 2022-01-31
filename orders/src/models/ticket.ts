@@ -8,7 +8,6 @@ export interface Ticket {
   title: string;
   price: number;
   userId: string;
-  version: number;
 }
 
 // 2. Create a Schema corresponding to the document interface.
@@ -18,7 +17,6 @@ const ticketSchema = new Schema<Ticket>(
     title: { type: String, required: true },
     price: { type: Number, required: true },
     userId: { type: String, required: true },
-    version: { type: Number, required: true },
   },
   {
     toJSON: {
@@ -30,6 +28,13 @@ const ticketSchema = new Schema<Ticket>(
     },
   }
 );
+
+ticketSchema.pre('save', async function (next) {
+  if (!this.isNew) {
+    this.increment();
+  }
+  next();
+});
 
 export const TicketModel = model<Ticket>('Ticket', ticketSchema);
 

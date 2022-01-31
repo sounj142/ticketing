@@ -35,7 +35,7 @@ const userSchema = new Schema<User>(
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.createdDate) {
+  if (this.isNew) {
     this.createdDate = getUtcNow();
   } else {
     this.updatedDate = getUtcNow();

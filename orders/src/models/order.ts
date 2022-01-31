@@ -40,7 +40,7 @@ const orderSchema = new Schema<Order>(
 );
 
 orderSchema.pre('save', function (next) {
-  if (!this.createdDate) {
+  if (this.isNew) {
     this.createdDate = getUtcNow();
   } else {
     this.updatedDate = getUtcNow();
