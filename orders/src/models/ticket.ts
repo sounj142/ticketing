@@ -29,12 +29,14 @@ const ticketSchema = new Schema<Ticket>(
   }
 );
 
-ticketSchema.pre('save', async function (next) {
-  if (!this.isNew) {
-    this.increment();
-  }
-  next();
-});
+/*
+// ticketSchema.pre('save', async function (next) {
+//   if (!this.isNew) {
+//     this.increment();
+//   }
+//   next();
+// });
+*/
 
 export const TicketModel = model<Ticket>('Ticket', ticketSchema);
 
@@ -52,4 +54,11 @@ export async function isReservedTicket(ticketId: string) {
     },
   });
   return !!order;
+}
+
+export function findByEvent(event: { id: string; version: number }) {
+  return TicketModel.findOne({
+    _id: event.id,
+    __v: event.version - 1,
+  });
 }
