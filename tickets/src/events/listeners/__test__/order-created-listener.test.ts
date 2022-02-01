@@ -21,7 +21,7 @@ it('in happy case, returns true and update orderId of ticket in db', async () =>
     id: '61f12948e67a2571aacee969',
     status: OrderStatus.Created,
     userId: '61ea90014a0a5e110631163b',
-    createdAt: getUtcNow(),
+    expiresAt: getUtcNow(),
     ticket: {
       id: ticket.id,
       price: ticket.price,
@@ -54,7 +54,7 @@ it('in ticket id does not exist, throw an Error', async () => {
     id: '61f12948e67a2571aacee969',
     status: OrderStatus.Created,
     userId: '61ea90014a0a5e110631163b',
-    createdAt: getUtcNow(),
+    expiresAt: getUtcNow(),
     ticket: {
       id: '61f367fd3bbf580d5a10da24',
       price: 10,

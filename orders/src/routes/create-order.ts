@@ -9,7 +9,7 @@ import {
   OrderStatus,
 } from '@hoangrepo/common';
 import { natsInfo } from '../nats-info';
-import { OrderAttrs, OrderModel } from '../models/order';
+import { getExpiresDate, OrderAttrs, OrderModel } from '../models/order';
 import { isReservedTicket, TicketModel } from '../models/ticket';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 
@@ -41,6 +41,7 @@ router.post(
       status: OrderStatus.Created,
       ticket: ticket,
       ticketId: ticket._id,
+      expiresAt: getExpiresDate(),
     });
     try {
       await order.save();
@@ -54,7 +55,7 @@ router.post(
       id: order.id,
       userId: order.userId,
       status: order.status,
-      createdAt: order.createdDate,
+      expiresAt: order.expiresAt,
       ticket: {
         id: order.ticket._id,
         price: order.ticket.price,
