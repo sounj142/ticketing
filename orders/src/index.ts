@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import app from './app';
 import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
 import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
+import { ExpirationCompleteListener } from './events/listeners/expiration-complete-listener';
 
 async function configNATS() {
   await natsInfo.connect(
@@ -14,6 +15,7 @@ async function configNATS() {
 
   new TicketCreatedListener(natsInfo.client).listen();
   new TicketUpdatedListener(natsInfo.client).listen();
+  new ExpirationCompleteListener(natsInfo.client).listen();
 
   natsInfo.configGracefulShutdown(() => {
     process.exit();

@@ -1,4 +1,6 @@
 import Queue from 'bull';
+import { ExpirationCompletePublisher } from '../events/publishers/expiration-complete-publisher';
+import { natsInfo } from '../nats-info';
 
 interface ExpirationInfo {
   orderId: string;
@@ -11,10 +13,9 @@ const expirationQueue = new Queue<ExpirationInfo>('order:expiration', {
 });
 
 expirationQueue.process(async (job) => {
-  console.log(
-    'I want to publish a expiration:complete event for order id ',
-    job.data.orderId
-  );
+  await new ExpirationCompletePublisher(natsInfo.client).publish({
+    orderId: job.data.orderId,
+  });
 });
 
 export { expirationQueue };

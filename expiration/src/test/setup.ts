@@ -1,4 +1,5 @@
 jest.mock('../nats-info');
+jest.mock('../queues/expiration-queue');
 
 beforeAll(async () => {
   configEnvironmentVariables();

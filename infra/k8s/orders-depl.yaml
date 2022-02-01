@@ -36,7 +36,7 @@ spec:
             - name: WRONG_MESSAGE_ORDER_RETRY_STRATEGY # optional config, in miliseconds
               value: '200,500'
             - name: EXPIRATION_WINDOW_SECONDS
-              value: '10' #'900'
+              value: '60' #'900'
 ---
 apiVersion: v1
 kind: Service

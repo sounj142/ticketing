@@ -12,12 +12,12 @@ export class OrderCreatedListener extends Listener<OrderCreatedEventDefinition> 
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: OrderCreatedEvent): Promise<boolean> {
-    let delayTime = new Date(event.expiresAt).valueOf() - new Date().valueOf();
+    let delayTime = new Date(event.expiresAt).getTime() - new Date().getTime();
     if (delayTime < 0) delayTime = 0;
 
     await expirationQueue.add({ orderId: event.id }, { delay: delayTime });
     console.log(
-      `Add order id ${event.id} to bull queue, delay time: ${delayTime / 1000}s`
+      `Add order id ${event.id} to bull queue, delay time: ${delayTime}ms`
     );
 
     return true;
