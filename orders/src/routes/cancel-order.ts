@@ -43,7 +43,7 @@ router.delete(
       id: order.id,
       userId: order.userId,
       status: order.status,
-      expiresAt: order.expiresAt,
+      expiresAt: order.expiresAt.toISOString(),
       ticket: {
         id: order.ticket._id,
         price: order.ticket.price,

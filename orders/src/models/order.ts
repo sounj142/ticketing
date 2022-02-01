@@ -1,4 +1,4 @@
-import { getUtcNow, OrderStatus } from '@hoangrepo/common';
+import { OrderStatus } from '@hoangrepo/common';
 import { model, Schema } from 'mongoose';
 import { Ticket } from './ticket';
 
@@ -43,9 +43,9 @@ const orderSchema = new Schema<Order>(
 
 orderSchema.pre('save', function (next) {
   if (this.isNew) {
-    this.createdDate = getUtcNow();
+    this.createdDate = new Date();
   } else {
-    this.updatedDate = getUtcNow();
+    this.updatedDate = new Date();
     this.increment();
   }
   next();
@@ -54,7 +54,7 @@ orderSchema.pre('save', function (next) {
 export const OrderModel = model<Order>('Order', orderSchema);
 
 export function getExpiresDate(): Date {
-  const now = getUtcNow();
+  const now = new Date();
   now.setSeconds(
     now.getSeconds() + Number(process.env.EXPIRATION_WINDOW_SECONDS)
   );

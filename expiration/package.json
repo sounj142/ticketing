@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hoangrepo/common": "^1.0.37",
+    "@hoangrepo/common": "^1.0.39",
     "@types/bull": "^3.15.7",
     "bull": "^4.4.0",
     "node-nats-streaming": "^0.2.6",

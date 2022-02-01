@@ -1,4 +1,3 @@
-import { getUtcNow } from '@hoangrepo/common';
 import { model, Schema } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
@@ -36,9 +35,9 @@ const userSchema = new Schema<User>(
 
 userSchema.pre('save', async function (next) {
   if (this.isNew) {
-    this.createdDate = getUtcNow();
+    this.createdDate = new Date();
   } else {
-    this.updatedDate = getUtcNow();
+    this.updatedDate = new Date();
   }
   next();
 });
