@@ -22,21 +22,13 @@ const ticketSchema = new Schema<Ticket>(
     toJSON: {
       transform(_doc, ret) {
         ret.id = ret._id;
+        ret.version = ret.__v;
         delete ret._id;
         delete ret.__v;
       },
     },
   }
 );
-
-/*
-// ticketSchema.pre('save', async function (next) {
-//   if (!this.isNew) {
-//     this.increment();
-//   }
-//   next();
-// });
-*/
 
 export const TicketModel = model<Ticket>('Ticket', ticketSchema);
 

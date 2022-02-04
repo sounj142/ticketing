@@ -2,7 +2,6 @@ import { OrderStatus } from '@hoangrepo/common';
 import { model, Schema } from 'mongoose';
 import { Ticket } from './ticket';
 
-// 1. Create an interface representing a document in MongoDB.
 export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
@@ -16,7 +15,6 @@ export interface Order extends OrderAttrs {
   updatedDate?: Date;
 }
 
-// 2. Create a Schema corresponding to the document interface.
 const orderSchema = new Schema<Order>(
   {
     userId: { type: String, required: true },

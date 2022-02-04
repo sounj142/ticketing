@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+    spec:
+      containers:
+        - name: payments
+          image: sounj142/payments
+          env:
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_PUBLIC_KEY
+            - name: MONGO_URI
+              value: 'mongodb://payments-mongo-srv:27017/payments'
+            - name: NATS_URI
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ACK_WAIT_IN_MILISECONDS
+              value: '5000'
+            - name: WRONG_MESSAGE_ORDER_RETRY_STRATEGY # optional config, in miliseconds
+              value: '200,500'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: payments
+  ports:
+    - name: payments
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
