@@ -28,13 +28,9 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
       await new OrderCancelledPublisher(this.client).publish({
         id: order.id,
-        userId: order.userId,
         status: order.status,
-        expiresAt: order.expiresAt.toISOString(),
         ticket: {
           id: order.ticket._id,
-          price: order.ticket.price,
-          title: order.ticket.title,
         },
         version: order.__v,
       });

@@ -1,8 +1,4 @@
-import {
-  OrderCancelledEvent,
-  OrderStatus,
-  Subjects,
-} from '@hoangrepo/common';
+import { OrderCancelledEvent, OrderStatus, Subjects } from '@hoangrepo/common';
 import { TicketAttrs, TicketModel } from '../../../models/ticket';
 import { natsInfo } from '../../../nats-info';
 import { OrderCancelledListener } from '../order-cancelled-listener';
@@ -22,12 +18,8 @@ it('in happy case, returns true and clear orderId of ticket in db', async () => 
   const event: OrderCancelledEvent = {
     id: ticket.orderId,
     status: OrderStatus.Cancelled,
-    userId: '61ea90014a0a5e110631163b',
-    expiresAt: new Date().toISOString(),
     ticket: {
       id: ticket.id,
-      price: ticket.price,
-      title: ticket.title,
     },
     version: 1,
   };
@@ -55,12 +47,8 @@ it('in ticket id does not exist, throw an Error', async () => {
   const event: OrderCancelledEvent = {
     id: '61f12948e67a2571aacee969',
     status: OrderStatus.Cancelled,
-    userId: '61ea90014a0a5e110631163b',
-    expiresAt: new Date().toISOString(),
     ticket: {
       id: '61f367fd3bbf580d5a10da24',
-      price: 10,
-      title: 'test ticket',
     },
     version: 1,
   };

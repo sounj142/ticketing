@@ -41,13 +41,9 @@ router.delete(
 
     await new OrderCancelledPublisher(natsInfo.client).publish({
       id: order.id,
-      userId: order.userId,
       status: order.status,
-      expiresAt: order.expiresAt.toISOString(),
       ticket: {
         id: order.ticket._id,
-        price: order.ticket.price,
-        title: order.ticket.title,
       },
       version: order.__v,
     });
