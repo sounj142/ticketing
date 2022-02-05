@@ -13,8 +13,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEventDefinition> 
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: OrderCreatedEvent): Promise<boolean> {
-    console.log('Order created message: ', event);
-
     const ticket = await TicketModel.findById(event.ticket.id);
     if (!ticket) {
       throw new Error('Ticket not found');

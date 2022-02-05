@@ -35,6 +35,11 @@ spec:
               value: '5000'
             - name: WRONG_MESSAGE_ORDER_RETRY_STRATEGY # optional config, in miliseconds
               value: '200,500'
+            - name: STRIPE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_KEY
 ---
 apiVersion: v1
 kind: Service

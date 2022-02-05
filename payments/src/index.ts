@@ -57,4 +57,7 @@ function checkApplicationVariables() {
   if (!process.env.ACK_WAIT_IN_MILISECONDS) {
     throw new Error('Missing ACK_WAIT_IN_MILISECONDS');
   }
+  if (!process.env.STRIPE_KEY) {
+    throw new Error('Missing STRIPE_KEY');
+  }
 }

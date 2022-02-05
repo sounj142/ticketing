@@ -13,8 +13,6 @@ export class OrderCancelledListener extends Listener<OrderCancelledEventDefiniti
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: OrderCancelledEvent): Promise<boolean> {
-    console.log('Order cancelled message: ', event);
-
     const ticket = await TicketModel.findById(event.ticket.id);
     if (!ticket) {
       throw new Error('Ticket not found');

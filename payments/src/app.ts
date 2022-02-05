@@ -1,6 +1,6 @@
 import express from 'express';
 import 'express-async-errors';
-import getAllRouter from './routes/get-all';
+import createPaymentRouter from './routes/create-payment';
 import {
   configCommonMiddlewareForExpress,
   configCatchAllAndHandleErrorMiddlewaresForExpress,
@@ -11,7 +11,7 @@ const app = express();
 configCommonMiddlewareForExpress(app);
 app.use(getCurrentUser);
 
-app.use(getAllRouter);
+app.use(createPaymentRouter);
 
 configCatchAllAndHandleErrorMiddlewaresForExpress(app);
 

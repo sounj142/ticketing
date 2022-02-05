@@ -12,8 +12,6 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEventDefinition
   queueGroupName: string = queueGroupName;
 
   async onMessage(event: TicketUpdatedEvent): Promise<boolean> {
-    console.log('Ticket updated message: ', event);
-
     const ticket = await findByEvent(event);
     if (!ticket) return false;
 

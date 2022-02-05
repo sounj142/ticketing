@@ -50,6 +50,7 @@ it('return 403 if user try to cancel order belong to other user', async () => {
 
 it('cancel an order with valid inputs', async () => {
   const { order, cookie } = await createNewOrder();
+  jest.clearAllMocks();
 
   const res = await request(app)
     .delete(`/api/orders/${order.id}`)
@@ -61,7 +62,7 @@ it('cancel an order with valid inputs', async () => {
   expect(res.body.id).toEqual(order.id);
 
   // ensure it publishes an event
-  expect(natsInfo.client.publish).toHaveBeenCalledTimes(2);
+  expect(natsInfo.client.publish).toHaveBeenCalledTimes(1);
 
   // ensure order was saved to db
   const orders = await OrderModel.find({}).populate('ticket');

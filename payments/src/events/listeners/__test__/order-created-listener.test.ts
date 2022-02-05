@@ -1,5 +1,5 @@
-import { OrderCreatedEvent, OrderStatus, Subjects } from '@hoangrepo/common';
-import { Order, OrderModel } from '../../../models/order';
+import { OrderCreatedEvent, OrderStatus } from '@hoangrepo/common';
+import { OrderModel } from '../../../models/order';
 import { natsInfo } from '../../../nats-info';
 import { OrderCreatedListener } from '../order-created-listener';
 

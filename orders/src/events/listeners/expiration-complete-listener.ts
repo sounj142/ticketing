@@ -20,21 +20,23 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
     }
 
     if (
-      order.status === OrderStatus.Created ||
-      order.status === OrderStatus.AwaitingPayment
+      order.status === OrderStatus.Complete ||
+      order.status === OrderStatus.Cancelled
     ) {
-      order.status = OrderStatus.Cancelled;
-      await order.save();
-
-      await new OrderCancelledPublisher(this.client).publish({
-        id: order.id,
-        status: order.status,
-        ticket: {
-          id: order.ticket._id,
-        },
-        version: order.__v,
-      });
+      return true;
     }
+
+    order.status = OrderStatus.Cancelled;
+    await order.save();
+
+    await new OrderCancelledPublisher(this.client).publish({
+      id: order.id,
+      status: order.status,
+      ticket: {
+        id: order.ticket._id,
+      },
+      version: order.__v,
+    });
 
     return true;
   }

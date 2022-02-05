@@ -18,22 +18,23 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hoangrepo/common": "^1.0.42",
+    "@types/express": "^4.17.13",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.14.0",
     "mongoose": "^6.1.6",
+    "node-nats-streaming": "^0.2.6",
+    "stripe": "^8.202.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.4",
-    "@types/express": "^4.17.13",
-    "@hoangrepo/common": "^1.0.40",
-    "node-nats-streaming": "^0.2.6"
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
-    "jest": "^27.4.7",
     "@types/jest": "^27.4.0",
+    "@types/supertest": "^2.0.11",
+    "jest": "^27.4.7",
     "mongodb-memory-server": "^8.2.0",
     "supertest": "^6.2.1",
-    "@types/supertest": "^2.0.11",
     "ts-jest": "^27.1.3"
   }
 }
