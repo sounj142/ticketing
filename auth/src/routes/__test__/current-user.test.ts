@@ -6,7 +6,7 @@ it('returns null when unauthentication', async () => {
   const res = await request(app)
     .get('/api/users/currentuser')
     .send()
-    .expect(400);
+    .expect(200);
 
   expect(res.body).toBeNull();
 });
