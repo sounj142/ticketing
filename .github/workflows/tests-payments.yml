@@ -2,7 +2,9 @@ name: tests-payments
 
 on:
   pull_request
-  
+env:
+  STRIPE_KEY: sk_test_51KPNJrHziHxmUuVBYPAzEKSb2Z74oeZmpj9YJDwwOD3EETm0szQmwbFcgnMNmYHqf4GvpIJeCpbuG2ai11Eq0hKN00HjY3h3E2
+
 jobs:
   build:
     runs-on: ubuntu-latest
