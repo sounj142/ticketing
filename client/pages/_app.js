@@ -14,18 +14,21 @@ export default function AppComponent({ Component, pageProps, prop_data }) {
 }
 
 AppComponent.getInitialProps = async (appContext) => {
-  const { data } = await buildClient(appContext.ctx).get(
-    '/api/users/currentuser'
-  );
+  const client = buildClient(appContext.ctx);
+  const { data: currentUser } = await client.get('/api/users/currentuser');
 
   let pageProps = {};
   if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+    pageProps = await appContext.Component.getInitialProps(
+      appContext.ctx,
+      client,
+      currentUser
+    );
   }
 
   return {
     prop_data: {
-      currentUser: data,
+      currentUser,
       ...pageProps,
     },
   };

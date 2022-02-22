@@ -42,13 +42,31 @@ export default function header({ currentUser }) {
           )}
 
           {!!currentUser && (
-            <li className='nav-item'>
-              <Link href='/'>
-                <a onClick={signOutHandle} className='nav-link' role='button'>
-                  Sign Out
-                </a>
-              </Link>
-            </li>
+            <>
+              <li className='nav-item'>
+                <Link href='/orders'>
+                  <a className='nav-link' role='button'>
+                    My Orders
+                  </a>
+                </Link>
+              </li>
+
+              <li className='nav-item'>
+                <Link href='/tickets/create'>
+                  <a className='nav-link' role='button'>
+                    Sell Tickets
+                  </a>
+                </Link>
+              </li>
+
+              <li className='nav-item'>
+                <Link href='/'>
+                  <a onClick={signOutHandle} className='nav-link' role='button'>
+                    Sign Out
+                  </a>
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </header>

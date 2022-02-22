@@ -4,11 +4,11 @@ import { useState } from 'react';
 export default function useRequest({ url, method, data }) {
   const [errors, setError] = useState(null);
 
-  const doRequest = async function (event) {
-    event.preventDefault();
+  const doRequest = async function (event, additionalData) {
+    event && event.preventDefault();
 
     try {
-      const response = await axios[method](url, data);
+      const response = await axios[method](url, { ...data, ...additionalData });
       setError(null);
       return response.data;
     } catch (err) {
@@ -22,7 +22,7 @@ export default function useRequest({ url, method, data }) {
           </ul>
         </div>
       );
-      return undefined;
+      return null;
     }
   };
 

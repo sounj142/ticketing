@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
+import { redirectToHomePageIfAuthorized } from '../../api/utils';
 
-export default function signuIp() {
+export default function signIn() {
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -58,3 +59,8 @@ export default function signuIp() {
     </form>
   );
 }
+
+signIn.getInitialProps = (context, _client, currentUser) => {
+  redirectToHomePageIfAuthorized(context, currentUser);
+  return {};
+};

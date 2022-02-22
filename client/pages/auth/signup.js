@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
+import { redirectToHomePageIfAuthorized } from '../../api/utils';
 
 export default function signuUp() {
   const [user, setUser] = useState({
@@ -58,3 +59,8 @@ export default function signuUp() {
     </form>
   );
 }
+
+signuUp.getInitialProps = (context, _client, currentUser) => {
+  redirectToHomePageIfAuthorized(context, currentUser);
+  return {};
+};
