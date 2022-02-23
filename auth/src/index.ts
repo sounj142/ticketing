@@ -25,6 +25,7 @@ function checkApplicationVariables() {
   if (!process.env.JWT_PUBLIC_KEY) {
     throw new Error('Missing JWT_PUBLIC_KEY');
   }
+
   if (!process.env.MONGO_URI) {
     throw new Error('Missing MONGO_URI');
   }
