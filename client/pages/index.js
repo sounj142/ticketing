@@ -19,7 +19,6 @@ export default function homeIndex({ currentUser }) {
     <div>
       <h1>Tickets</h1>
       {errors}
-
       {currentUser && (
         <div className='text-right'>
           <Link href='/tickets/create'>

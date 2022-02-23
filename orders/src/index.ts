@@ -62,7 +62,6 @@ function checkApplicationVariables() {
   if (!process.env.EXPIRATION_WINDOW_SECONDS) {
     throw new Error('Missing EXPIRATION_WINDOW_SECONDS');
   }
-
   if (!process.env.ACK_WAIT_IN_MILISECONDS) {
     throw new Error('Missing ACK_WAIT_IN_MILISECONDS');
   }
