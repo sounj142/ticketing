@@ -23,7 +23,7 @@ async function applicationStart() {
   checkApplicationVariables();
   try {
     await mongoose.connect(process.env.MONGO_URI!);
-    console.log('Connected to mongodb');
+    console.log('Connected to mongodb.');
 
     await configNATS();
 

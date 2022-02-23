@@ -7,7 +7,7 @@ async function configNATS() {
     process.env.NATS_CLIENT_ID!,
     process.env.NATS_URI!
   );
-  console.log('Connected to NAST');
+  console.log('Connected to NAST.');
   new OrderCreatedListener(natsInfo.client).listen();
 
   natsInfo.configGracefulShutdown(() => {
