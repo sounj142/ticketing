@@ -35,8 +35,5 @@
     "supertest": "^6.2.1",
     "@types/supertest": "^2.0.11",
     "ts-jest": "^27.1.3"
-  },
-  "engines": {
-    "node": "16.13.0"
   }
 }
