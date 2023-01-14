@@ -1,12 +1,12 @@
 import { BaseError } from './base-error';
 
-export class NotFoundError extends BaseError {
-  statusCode = 404;
+export class BadRequestError extends BaseError {
+  statusCode = 400;
 
-  constructor(public errorId?: string, message: string = 'Not Found.') {
+  constructor(public errorId?: string, message?: string) {
     super(message);
     // only because we're extending a built in class
-    Object.setPrototypeOf(this, NotFoundError.prototype);
+    Object.setPrototypeOf(this, BadRequestError.prototype);
   }
 
   public getCommonErrorStructure() {

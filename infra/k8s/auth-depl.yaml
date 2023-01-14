@@ -13,8 +13,11 @@ spec:
         app: auth
     spec:
       containers:
-      - name: auth
-        image: sounj142/auth
+        - name: auth
+          image: sounj142/auth
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://auth-db-srv:27017/auth'
 ---
 apiVersion: v1
 kind: Service
@@ -24,7 +27,7 @@ spec:
   selector:
     app: auth
   ports:
-  - name: auth
-    protocol: TCP
-    port: 3000
-    targetPort: 3000
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

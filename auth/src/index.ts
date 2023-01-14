@@ -1,22 +1,17 @@
-import express from 'express';
-import 'express-async-errors';
-import { configCatchAllAndHandleErrorMiddlewares } from './config';
-import currentUserRouter from './routes/current-user';
-import signInRouter from './routes/sign-in';
-import signOutRouter from './routes/sign-out';
-import signUpRouter from './routes/sign-up';
+import app from './app';
+import mongoose from 'mongoose';
 
-const app = express();
-app.use(express.json());
+(async () => {
+  try {
+    mongoose.set('strictQuery', true);
+    await mongoose.connect(process.env.MONGO_URI!);
+    console.log('Connected to mongodb...');
 
-app.use(currentUserRouter);
-app.use(signInRouter);
-app.use(signOutRouter);
-app.use(signUpRouter);
-
-configCatchAllAndHandleErrorMiddlewares(app);
-
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}...`);
-});
+    const port = 3000;
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}...`);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+})();
