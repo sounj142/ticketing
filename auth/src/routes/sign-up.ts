@@ -5,6 +5,7 @@ import { BadRequestError } from '../errors/bad-request-error';
 import validateRequest from '../middlewares/validate-request';
 import User from '../models/user';
 import callMongoDb from '../utils/call-mongo';
+import { isTestEnvironment } from '../utils/config';
 import { Password } from '../utils/password';
 import { generateJwtToken } from './shared';
 
@@ -43,7 +44,7 @@ router.post(
 
     const authResult = generateJwtToken(user, req);
 
-    console.log(`Created user '${user.email}'`);
+    !isTestEnvironment && console.log(`Created user '${user.email}'`);
     res.status(201).send(authResult);
   }
 );
