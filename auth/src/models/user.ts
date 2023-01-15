@@ -12,7 +12,7 @@ interface UserModel extends mongoose.Model<UserDoc> {
 }
 
 // interface describes the properties that a User document actual has
-interface UserDoc extends mongoose.Document, UserInterface {}
+export interface UserDoc extends mongoose.Document, UserInterface {}
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -23,6 +23,16 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     require: true,
+  },
+},
+{
+  toJSON: {
+    transform(_doc, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.password;
+      delete ret.__v;
+    },
   },
 });
 userSchema.statics.build = (user: UserInterface) => new User(user);

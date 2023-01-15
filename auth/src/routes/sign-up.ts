@@ -2,11 +2,11 @@ import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import AuthError from '../error-code';
 import { BadRequestError } from '../errors/bad-request-error';
-import { DatabaseConnectionError } from '../errors/database-connection-error';
 import validateRequest from '../middlewares/validate-request';
 import User from '../models/user';
 import callMongoDb from '../utils/call-mongo';
 import { Password } from '../utils/password';
+import { generateJwtToken } from './shared';
 
 const router = Router();
 
@@ -41,7 +41,10 @@ router.post(
       }
     );
 
-    res.status(201).send(user);
+    const authResult = generateJwtToken(user, req);
+
+    console.log(`Created user '${user.email}'`);
+    res.status(201).send(authResult);
   }
 );
 

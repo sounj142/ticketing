@@ -1,5 +1,8 @@
 import app from './app';
 import mongoose from 'mongoose';
+import { checkEnvironmentVariables } from './utils/check-environment-variables';
+
+checkEnvironmentVariables('MONGO_URI', 'JWT_EXPIRES_IN', 'JWT_PUBLIC_KEY');
 
 (async () => {
   try {

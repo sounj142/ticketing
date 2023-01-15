@@ -1,5 +1,6 @@
 const AuthError = {
   Auth0001: '',
+  Auth0002: '',
 };
 
 const _error: any = AuthError;

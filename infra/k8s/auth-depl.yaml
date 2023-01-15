@@ -18,6 +18,17 @@ spec:
           env:
             - name: MONGO_URI
               value: 'mongodb://auth-db-srv:27017/auth'
+            - name: JWT_EXPIRES_IN
+              value: 10m # 10 minutes
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_PUBLIC_KEY
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "3000m"
 ---
 apiVersion: v1
 kind: Service

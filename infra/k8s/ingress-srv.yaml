@@ -6,7 +6,17 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: ticketing.vn
+    - host: ticketing-server-app.vn
+      http:
+        paths:
+        - path: /api/users/
+          pathType: Prefix
+          backend:
+            service:
+              name: auth-srv
+              port:
+                number: 3000
+    - host: ticketing-client-app.vn
       http:
         paths:
         - path: /api/users/

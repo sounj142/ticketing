@@ -15,6 +15,10 @@ spec:
       containers:
         - name: auth-db
           image: mongo
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "3000m"
 ---
 apiVersion: v1
 kind: Service
