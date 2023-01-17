@@ -21,7 +21,7 @@ export function getCurrentUser(
   if (!req.currentUser) {
     const authorizationHearder = req.headers.authorization;
     if (authorizationHearder?.startsWith('Bearer ')) {
-      const jwt = authorizationHearder.substring(7);
+      const jwt = authorizationHearder.substring(7).trimStart();
       req.currentUser = JwtHelper.verifyToken(jwt);
     }
   }

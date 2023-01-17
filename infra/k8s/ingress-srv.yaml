@@ -25,6 +25,7 @@ spec:
                 number: 3000
 
 
+
     - host: ticketing-client-app.vn
       http:
         paths:
@@ -33,6 +34,13 @@ spec:
           backend:
             service:
               name: auth-srv
+              port:
+                number: 3000
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: client-normal-react-srv
               port:
                 number: 3000
 

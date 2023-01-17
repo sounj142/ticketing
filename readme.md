@@ -6,9 +6,12 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 3. Open hosts file, add configs:<br />
 127.0.0.1 ticketing-server-app.vn<br />
 127.0.0.1 ticketing-client-app.vn<br />
-4. Navigate to /ticketing folder, run command<br />
+4. Navigate to /ticketing folder, run commands<br />
+kubectl create secret generic jwt-secret --from-file=JWT_PRIVATE_KEY=private.key --from-file=JWT_PUBLIC_KEY=public.key
+<br />
+5. Navigate to /ticketing folder, run command<br />
 skaffold dev
 <br />
-5. There should have two websites available on your computer:<br />
+6. There should have two websites available on your computer:<br />
 - https://ticketing-server-app.vn: React server side app, using Next.js<br />
 - https://ticketing-client-app.vn: Normal React client side app<br />

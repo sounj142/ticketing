@@ -63,7 +63,7 @@ it('sets a cookies after successful sign up', async () => {
     .expect(201);
 
   expect(res.get('Set-Cookie')).toBeDefined();
-  expect(res.body.jwt).toBeUndefined();
+  expect(res.body.token).toBeUndefined();
 });
 
 it('if dontUseCookie applied, request body should have jwt token when successful sign up', async () => {
@@ -76,5 +76,5 @@ it('if dontUseCookie applied, request body should have jwt token when successful
     .expect(201);
 
   expect(res.get('Set-Cookie')).toBeUndefined();
-  expect(res.body.jwt).toBeDefined();
+  expect(res.body.token).toBeDefined();
 });

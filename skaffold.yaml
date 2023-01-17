@@ -16,6 +16,7 @@ build:
         manual:
           - src: 'src/**/*'
             dest: .
+
     - image: sounj142/client
       context: client
       docker:
@@ -23,5 +24,18 @@ build:
       sync:
         manual:
           - src: '**/*'
+            dest: .
+
+    - image: sounj142/client-normal-react
+      context: client-normal-react
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.ts*'
+            dest: .
+          - src: '**/*.html'
+            dest: .
+          - src: '**/*.css'
             dest: .
             

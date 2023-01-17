@@ -42,7 +42,8 @@ router.post(
       }
     );
 
-    const authResult = generateJwtToken(user, req);
+    const dontUseCookie = req.query.dontUseCookie === 'true';
+    const authResult = generateJwtToken(user, req, dontUseCookie);
 
     !isTestEnvironment && console.log(`Created user '${user.email}'`);
     res.status(201).send(authResult);

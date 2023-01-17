@@ -19,16 +19,20 @@ spec:
             - name: MONGO_URI
               value: 'mongodb://auth-db-srv:27017/auth'
             - name: JWT_EXPIRES_IN
-              value: 60m # in minute
+              value: 10m # in minute
+            - name: REFRESH_EXPIRES_IN
+              value: 180m # in minute
+            - name: JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_PRIVATE_KEY
             - name: JWT_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_PUBLIC_KEY
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "3000m"
+
 ---
 apiVersion: v1
 kind: Service

@@ -31,7 +31,7 @@ it('returns user jwt data when send Bearer header token', async () => {
       password: 'password',
     })
     .expect(201);
-  const jwt = authResponse.body.jwt;
+  const jwt = authResponse.body.token;
 
   const res = await request(app)
     .get('/api/users/currentuser')

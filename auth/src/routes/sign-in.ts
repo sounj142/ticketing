@@ -38,7 +38,8 @@ router.post(
       throw new BadRequestError(AuthError.Auth0002, defaultErrorMessage);
     }
 
-    const authResult = generateJwtToken(user, req);
+    const dontUseCookie = req.query.dontUseCookie === 'true';
+    const authResult = generateJwtToken(user, req, dontUseCookie);
 
     !isTestEnvironment && console.log(`User '${email}' logged in successfully`);
     res.status(200).send(authResult);
