@@ -19,7 +19,7 @@ spec:
             - name: MONGO_URI
               value: 'mongodb://auth-db-srv:27017/auth'
             - name: JWT_EXPIRES_IN
-              value: 10m # 10 minutes
+              value: 60m # in minute
             - name: JWT_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
