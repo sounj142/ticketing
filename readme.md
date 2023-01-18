@@ -15,3 +15,6 @@ skaffold dev
 6. There should have two websites available on your computer:<br />
 - https://ticketing-server-app.vn: React server side app, using Next.js<br />
 - https://ticketing-client-app.vn: Normal React client side app<br />
+
+To publish a new npm version of common library, navigate to /common and run this command<br />
+npm run pub

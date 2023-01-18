@@ -1,7 +1,6 @@
+import { callMongoDb, getCurrentUser } from '@hoangorg/common';
 import { Router, Request, Response } from 'express';
-import { getCurrentUser } from '../middlewares/get-current-user';
 import User from '../models/user';
-import callMongoDb from '../utils/call-mongo';
 
 const router = Router();
 

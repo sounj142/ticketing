@@ -1,6 +1,6 @@
 import app from './app';
 import mongoose from 'mongoose';
-import { checkEnvironmentVariables } from './utils/check-environment-variables';
+import { checkEnvironmentVariables } from '@hoangorg/common';
 
 checkEnvironmentVariables(
   'MONGO_URI',

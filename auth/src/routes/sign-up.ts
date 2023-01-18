@@ -1,13 +1,15 @@
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import AuthError from '../error-code';
-import { BadRequestError } from '../errors/bad-request-error';
-import validateRequest from '../middlewares/validate-request';
 import User from '../models/user';
-import callMongoDb from '../utils/call-mongo';
-import { isTestEnvironment } from '../utils/config';
-import { Password } from '../utils/password';
 import { generateJwtToken } from './shared';
+import {
+  BadRequestError,
+  callMongoDb,
+  isTestEnvironment,
+  Password,
+  validateRequest,
+} from '@hoangorg/common';
 
 const router = Router();
 

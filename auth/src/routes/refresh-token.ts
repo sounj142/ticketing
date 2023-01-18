@@ -1,10 +1,12 @@
+import {
+  BadRequestError,
+  callMongoDb,
+  isTestEnvironment,
+  JwtHelper,
+} from '@hoangorg/common';
 import { Router, Request, Response } from 'express';
 import AuthError from '../error-code';
-import { BadRequestError } from '../errors/bad-request-error';
 import User from '../models/user';
-import callMongoDb from '../utils/call-mongo';
-import { isTestEnvironment } from '../utils/config';
-import { JwtHelper } from '../utils/jwt-helper';
 import { generateJwtToken } from './shared';
 
 const router = Router();

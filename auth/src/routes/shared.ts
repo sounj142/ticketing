@@ -1,7 +1,7 @@
+import { JwtHelper } from '@hoangorg/common';
 import { Request } from 'express';
 import { UserDoc } from '../models/user';
 import { jwtExpiresIn, refreshExpiresIn } from '../utils/config';
-import { JwtHelper } from '../utils/jwt-helper';
 
 interface LoginResult {
   id: string;
