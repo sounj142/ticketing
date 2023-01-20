@@ -17,6 +17,15 @@ build:
           - src: 'src/**/*'
             dest: .
 
+    - image: sounj142/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*'
+            dest: .
+
     - image: sounj142/client
       context: client
       docker:
