@@ -38,7 +38,7 @@ router.post('/api/users/refresh-token', async (req: Request, res: Response) => {
   const authResult = generateJwtToken(user, req, true);
 
   !isTestEnvironment &&
-    console.log(`Generate new token for user '${user.email}' successfully`);
+    console.debug(`Generate new token for user '${user.email}' successfully`);
   res.status(200).send(authResult);
 });
 
