@@ -2,10 +2,7 @@ import app from './app';
 import mongoose from 'mongoose';
 import { checkEnvironmentVariables } from '@hoangorg/common';
 
-checkEnvironmentVariables(
-  'MONGO_URI',
-  'JWT_PUBLIC_KEY'
-);
+checkEnvironmentVariables('MONGO_URI', 'JWT_PUBLIC_KEY');
 
 (async () => {
   try {

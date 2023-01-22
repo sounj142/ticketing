@@ -1,0 +1,37 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Auth",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\auth\\src\\index.ts",
+      "preLaunchTask": "tsc: build - auth/tsconfig.debug.json",
+      "outFiles": ["${workspaceFolder}\\auth\\src\\__debug\\**\\*.js"],
+      "env": {
+        "MONGO_URI": "mongodb://localhost:27017/auth",
+        "JWT_EXPIRES_IN": "10m",
+        "REFRESH_EXPIRES_IN": "180m",
+        "JWT_PRIVATE_KEY": "-----BEGIN RSA PRIVATE KEY-----\r\nMIIEogIBAAKCAQBqaVNDuU441utt3g+GFDBnj5aSXIiBcx92aCHelXyPbs0YgP+/\r\nYJa2SwX73vYc3hKj/AftwY6xzF682J226s3Eka9UH5NhjBMXpICw79FjARxCPLNa\r\nQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3ZaMiyLVUGK9lGtb1azv01udAWRUUk\r\nhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/TPNcOASHWanr+cuKwQ1QqpgnUE8L\r\nHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSUP2p/kf0xcu1+lvL1M7Rk/X64w6MZ\r\n4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/RAgMBAAECggEAIDlA87M70s6SgLTM\r\nMqgOeG3tBOlslPbNwkeKaiMOk0jUZuU5jTSsrwtNBpbgJKHDN1Fs/Tyt/32J+toF\r\n+IxmP252j5z4PoPyjChOqEYXPEnryssi7OO7o/tebcEJu4md3sl5jtw3+vn2ldBb\r\nrDhR8RJgJETCCJpis5z5eHRSDWCOm+qXUb7GGqqoCwhoxRlG5V3VhyMAQXaiDyxl\r\nSJ0cyCjpyukUfMxWDalzWbyWcg0YIj4nNZtYXu3NMGhIo4O9xTdG7k2CKt3lEJYl\r\nisnkQAoy22wAAn7YcD4kwwuBX5UeGyyPUl+9uvvQizmp7j/yg20dNpSwZY4ppMoN\r\nXzGqOQKBgQDR5Kg3uLiyK2M73fVvh7zPkd1rF7OqgneoA24mpP8mm4tVp7J1tu+l\r\ntX/63yKPcTy0rxVWbJsIOKcu5FNRzoHPmupJ/e/HOdI0QMNXXwwfig/2OKqsFT7F\r\nTJPnqCjhT6XNtlTmaJPl628hVZrUizBpXC1CCWr9UMbi6QC+buXFUwKBgQCByV8Y\r\nC7ky/Bggf/O9RlDv4Cp3vMkfzcMPkeMiegtJKegiT/+45K5lzyICXntgm95XrOG3\r\nBCxo5VveXjbls6s/kACawi1aO5aK43Vil3Kd0ZPMpGmiFfMOErXrRP1aLUcA9Kxd\r\nGLef++tk04H+fNviGAYOcPq5zXsRiTNql7rNywKBgFS4W+Hp8LsR4kMm60tyWZbb\r\nBKmWbpHTiaLKh6qXjNmzjQEs6E61YXPcl+TWLigCCAPSa+VvfwBJhcnapXruxNzc\r\nZdcp5Z/fyeYHghGBLu6IFrtG0jUVejm/GDA4Yw/Wy1EGWKyL5661YiztVcqWyBqu\r\n9yGhlYrcEPtEG2XCc4I7AoGABSy3Ouk0wCCnAZy4ZiKIlZfVeaKwTjFRBqzlZnmB\r\nO7CNDdkss/2CKpMAoyGLP8XXLp24/igPcTs713jgLXZlbIpcS89UKZXYob8B7iVl\r\nr38sqmsfvxOq9jOuxyugAlltzE71FF0o7RsJPqLkOvZVegVFMIw2ovPbZU6YGzbj\r\nftMCgYEAhgFj/73imXn+/9bdoepTAw3STfk5olNG4Y2cH87pjxDFmml1wY+J5N1M\r\nTF/LLP2ytNcneIL4NfPFSzigwpRbKehynGxu+pBGlEuFlYqO5XEWYxMfxiW1dnx2\r\nXeivjPSUsPrpyiDAHTXoC6OYJWeur9WZcvj9mpFixSa2evm8UHU=\r\n-----END RSA PRIVATE KEY-----",
+        "JWT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\r\nMIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBqaVNDuU441utt3g+GFDBn\r\nj5aSXIiBcx92aCHelXyPbs0YgP+/YJa2SwX73vYc3hKj/AftwY6xzF682J226s3E\r\nka9UH5NhjBMXpICw79FjARxCPLNaQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3Z\r\naMiyLVUGK9lGtb1azv01udAWRUUkhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/\r\nTPNcOASHWanr+cuKwQ1QqpgnUE8LHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSU\r\nP2p/kf0xcu1+lvL1M7Rk/X64w6MZ4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/R\r\nAgMBAAE=\r\n-----END PUBLIC KEY-----"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Tickets",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\tickets\\src\\index.ts",
+      "preLaunchTask": "tsc: build - tickets/tsconfig.debug.json",
+      "outFiles": ["${workspaceFolder}\\tickets\\src\\__debug\\**\\*.js"],
+      "env": {
+        "MONGO_URI": "mongodb://localhost:27017/tickets",
+        "JWT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\r\nMIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBqaVNDuU441utt3g+GFDBn\r\nj5aSXIiBcx92aCHelXyPbs0YgP+/YJa2SwX73vYc3hKj/AftwY6xzF682J226s3E\r\nka9UH5NhjBMXpICw79FjARxCPLNaQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3Z\r\naMiyLVUGK9lGtb1azv01udAWRUUkhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/\r\nTPNcOASHWanr+cuKwQ1QqpgnUE8LHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSU\r\nP2p/kf0xcu1+lvL1M7Rk/X64w6MZ4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/R\r\nAgMBAAE=\r\n-----END PUBLIC KEY-----"
+      }
+    }
+  ]
+}
