@@ -2,7 +2,7 @@ import { JwtHelper } from '@hoangorg/common';
 import request from 'supertest';
 import app from '../../app';
 import Ticket from '../../models/ticket';
-// import { natsInfo } from '../../nats-info';
+import { natsInfo } from '../../utils/nats-client';
 import { createNewTicket } from '../../test/helper';
 
 it('returns 401 if anonymous tries to update ticket', async () => {
@@ -111,8 +111,8 @@ it('update a ticket with valid inputs', async () => {
   expect(res.body.title).toEqual(title);
   expect(res.body.price).toEqual(price);
 
-  // // ensure it publishes an event
-  // expect(natsInfo.client.publish).toHaveBeenCalledTimes(2);
+  // ensure it publishes an event
+  expect(natsInfo.client.publish).toHaveBeenCalledTimes(2);
 
   // ensure ticket was saved to db
   const tickets = await Ticket.find({});
@@ -122,21 +122,21 @@ it('update a ticket with valid inputs', async () => {
   expect(tickets[0].userId).toEqual(ticket.userId);
 });
 
-// it('return 400 if user try to update a reserved ticket', async () => {
-//   const { ticket, cookie } = await createNewTicket();
+it('return 400 if user try to update a reserved ticket', async () => {
+  const { ticket, cookie } = await createNewTicket();
 
-//   // set orderId to ticket
-//   const ticketData = await Ticket.findById(ticket.id);
+  // set orderId to ticket
+  const ticketData = await Ticket.findById(ticket.id);
 
-//   ticketData!.orderId = '61f367fd3bbf580d5a10da24';
-//   await ticketData!.save();
+  ticketData!.orderId = '61f367fd3bbf580d5a10da24';
+  await ticketData!.save();
 
-//   await request(app)
-//     .put(`/api/tickets/${ticket.id}`)
-//     .set('Cookie', cookie)
-//     .send({
-//       title: 'updated title',
-//       price: 999,
-//     })
-//     .expect(400);
-// });
+  await request(app)
+    .put(`/api/tickets/${ticket.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title: 'updated title',
+      price: 999,
+    })
+    .expect(400);
+});

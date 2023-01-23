@@ -5,6 +5,7 @@ interface TicketInterface {
   title: string;
   price: number;
   userId: string;
+  orderId?: string;
 }
 
 // interface describes the properties that a Ticket model has
@@ -29,6 +30,7 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    orderId: String,
   },
   {
     toJSON: {
@@ -40,6 +42,16 @@ const ticketSchema = new mongoose.Schema(
     },
   }
 );
+ticketSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    //this.createdDate = new Date();
+  } else {
+    //this.updatedDate = new Date();
+    this.increment();
+  }
+  next();
+});
+
 ticketSchema.statics.build = (ticket: TicketInterface) => new Ticket(ticket);
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);

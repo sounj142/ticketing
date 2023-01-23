@@ -23,6 +23,18 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_PUBLIC_KEY
+            - name: NATS_URI
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ACK_WAIT_IN_MILISECONDS
+              value: '5000'
+            - name: WRONG_MESSAGE_ORDER_RETRY_STRATEGY # optional config, in miliseconds
+              value: '200,500'
 
 ---
 apiVersion: v1

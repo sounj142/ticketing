@@ -2,8 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { validateRequest, authentication, callMongoDb } from '@hoangorg/common';
 import Ticket from '../models/ticket';
-// import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
-// import { natsInfo } from '../nats-info';
+import { getTicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
 
 const router = express.Router();
 
@@ -36,13 +35,13 @@ router.post(
 
     await callMongoDb(() => ticket.save());
 
-    // await new TicketCreatedPublisher(natsInfo.client).publish({
-    //   id: ticket.id,
-    //   title: ticket.title,
-    //   price: ticket.price,
-    //   userId: ticket.userId,
-    //   version: ticket.__v,
-    // });
+    await getTicketCreatedPublisher().publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+      version: ticket.__v,
+    });
 
     res.status(201).json(ticket);
   }

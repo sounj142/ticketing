@@ -2,6 +2,7 @@ import { natsWrapper, applyLogLevel } from '@hoangorg/common';
 import cuid from 'cuid';
 import prompt from 'prompt';
 import { TicketCreatedPublisher } from './events/ticket-created-publisher';
+import { configGracefulShutdown } from './graceful-shutdown';
 
 applyLogLevel('debug');
 
@@ -10,6 +11,8 @@ prompt.start();
 natsWrapper
   .connect('ticketing', cuid(), 'http://localhost:4222')
   .then(processAfterConnected);
+
+configGracefulShutdown();
 
 function processAfterConnected() {
   const publisher = new TicketCreatedPublisher(natsWrapper.client);
