@@ -6,7 +6,7 @@ import {
 import { natsInfo } from '../../utils/nats-client';
 
 export class OrderCancelledPublisher extends Publisher<OrderCancelledEventDefinition> {
-  subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
+  readonly subject = Subjects.OrderCancelled;
 }
 
 let _orderCancelledPublisher: OrderCancelledPublisher | undefined = undefined;
