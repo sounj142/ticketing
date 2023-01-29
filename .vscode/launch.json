@@ -30,7 +30,31 @@
       "outFiles": ["${workspaceFolder}\\tickets\\src\\__debug\\**\\*.js"],
       "env": {
         "MONGO_URI": "mongodb://localhost:27017/tickets",
-        "JWT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\r\nMIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBqaVNDuU441utt3g+GFDBn\r\nj5aSXIiBcx92aCHelXyPbs0YgP+/YJa2SwX73vYc3hKj/AftwY6xzF682J226s3E\r\nka9UH5NhjBMXpICw79FjARxCPLNaQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3Z\r\naMiyLVUGK9lGtb1azv01udAWRUUkhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/\r\nTPNcOASHWanr+cuKwQ1QqpgnUE8LHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSU\r\nP2p/kf0xcu1+lvL1M7Rk/X64w6MZ4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/R\r\nAgMBAAE=\r\n-----END PUBLIC KEY-----"
+        "JWT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\r\nMIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBqaVNDuU441utt3g+GFDBn\r\nj5aSXIiBcx92aCHelXyPbs0YgP+/YJa2SwX73vYc3hKj/AftwY6xzF682J226s3E\r\nka9UH5NhjBMXpICw79FjARxCPLNaQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3Z\r\naMiyLVUGK9lGtb1azv01udAWRUUkhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/\r\nTPNcOASHWanr+cuKwQ1QqpgnUE8LHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSU\r\nP2p/kf0xcu1+lvL1M7Rk/X64w6MZ4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/R\r\nAgMBAAE=\r\n-----END PUBLIC KEY-----",
+        "NATS_URI": "http://localhost:4222",
+        "NATS_CLUSTER_ID": "ticketing",
+        "NATS_CLIENT_ID": "tickets-debug",
+        "ACK_WAIT_IN_MILISECONDS": "5000",
+        "WRONG_MESSAGE_ORDER_RETRY_STRATEGY": "50,200,500"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Orders",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\orders\\src\\index.ts",
+      "preLaunchTask": "tsc: build - orders/tsconfig.debug.json",
+      "outFiles": ["${workspaceFolder}\\orders\\src\\__debug\\**\\*.js"],
+      "env": {
+        "MONGO_URI": "mongodb://localhost:27017/orders",
+        "JWT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----\r\nMIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBqaVNDuU441utt3g+GFDBn\r\nj5aSXIiBcx92aCHelXyPbs0YgP+/YJa2SwX73vYc3hKj/AftwY6xzF682J226s3E\r\nka9UH5NhjBMXpICw79FjARxCPLNaQI4YZIrqFw6v1c/DAOhLnOsRISvhcNYwFq3Z\r\naMiyLVUGK9lGtb1azv01udAWRUUkhTDJ5OmIdWn3lxLwK3lTeakrCgdm3CpoeAV/\r\nTPNcOASHWanr+cuKwQ1QqpgnUE8LHR5vpB1B/chQT+dsnUsJYztQT78zBRRFLHSU\r\nP2p/kf0xcu1+lvL1M7Rk/X64w6MZ4caXHSs1PZqBZz6s7Ud/CjG+CTAAbYNChO/R\r\nAgMBAAE=\r\n-----END PUBLIC KEY-----",
+        "NATS_URI": "http://localhost:4222",
+        "NATS_CLUSTER_ID": "ticketing",
+        "NATS_CLIENT_ID": "orders-debug",
+        "EXPIRATION_WINDOW_SECONDS": "60",
+        "ACK_WAIT_IN_MILISECONDS": "5000",
+        "WRONG_MESSAGE_ORDER_RETRY_STRATEGY": "50,200,500"
       }
     }
   ]

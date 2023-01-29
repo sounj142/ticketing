@@ -14,10 +14,12 @@ skaffold dev
 <br />
 6. There should have two websites available on your computer:<br />
 - https://ticketing-server-app.vn: React server side app, using Next.js<br />
-- https://ticketing-client-app.vn: Normal React client side app<br />
-<br />
-II. To publish a new npm version of common library, navigate to /common and run this command<br />
+- https://ticketing-client-app.vn: Normal React client side app
+<br /><br /><br />
+II. To publish a new npm version of common library, navigate to /common and run command<br />
 npm run pub
+
+
 <br /><br /><br />
 III. To debug, for example, debug tickets microservice:
 1. Navigate to /ticketing folder, run command <br/>
@@ -38,3 +40,11 @@ In debug mod, navigate to ticket service using url http://localhost:3000
 <br/>
 All other services still run in kubernetes, use https://ticketing-client-app.vn/ to access them.
 
+
+<br /><br /><br />
+IV. Test
+1. To run tests, navigate to service folder, e.g: tickets/<br />
+2. Ensure child folder src/__debug should be deleted<br />
+3. Run command<br />
+npm run test
+<br />

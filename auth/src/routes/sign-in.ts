@@ -6,7 +6,6 @@ import { generateJwtToken } from './shared';
 import {
   BadRequestError,
   callMongoDb,
-  isTestEnvironment,
   Password,
   validateRequest,
 } from '@hoangorg/common';
@@ -43,7 +42,7 @@ router.post(
     const dontUseCookie = req.query.dontUseCookie === 'true';
     const authResult = generateJwtToken(user, req, dontUseCookie);
 
-    !isTestEnvironment && console.log(`User '${email}' logged in successfully`);
+    console.log(`User '${email}' logged in successfully`);
     res.status(200).send(authResult);
   }
 );

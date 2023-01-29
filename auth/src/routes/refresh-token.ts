@@ -1,9 +1,4 @@
-import {
-  BadRequestError,
-  callMongoDb,
-  isTestEnvironment,
-  JwtHelper,
-} from '@hoangorg/common';
+import { BadRequestError, callMongoDb, JwtHelper } from '@hoangorg/common';
 import { Router, Request, Response } from 'express';
 import AuthError from '../error-code';
 import User from '../models/user';
@@ -37,8 +32,7 @@ router.post('/api/users/refresh-token', async (req: Request, res: Response) => {
 
   const authResult = generateJwtToken(user, req, true);
 
-  !isTestEnvironment &&
-    console.debug(`Generate new token for user '${user.email}' successfully`);
+  console.debug(`Generate new token for user '${user.email}' successfully`);
   res.status(200).send(authResult);
 });
 

@@ -6,7 +6,6 @@ import { generateJwtToken } from './shared';
 import {
   BadRequestError,
   callMongoDb,
-  isTestEnvironment,
   Password,
   validateRequest,
 } from '@hoangorg/common';
@@ -47,7 +46,7 @@ router.post(
     const dontUseCookie = req.query.dontUseCookie === 'true';
     const authResult = generateJwtToken(user, req, dontUseCookie);
 
-    !isTestEnvironment && console.log(`Created user '${user.email}'`);
+    console.log(`Created user '${user.email}'`);
     res.status(201).send(authResult);
   }
 );

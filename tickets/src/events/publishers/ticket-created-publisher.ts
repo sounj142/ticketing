@@ -13,4 +13,3 @@ let _ticketCreatedPublisher: TicketCreatedPublisher | undefined = undefined;
 export const getTicketCreatedPublisher = () =>
   _ticketCreatedPublisher ||
   (_ticketCreatedPublisher = new TicketCreatedPublisher(natsInfo.client));
-
